@@ -1,0 +1,50 @@
+name: Package StateRift website for Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/**'
+      - '.github/workflows/pages-package.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package-static-site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify deployable website files
+        run: |
+          test -s web/index.html
+          test -s web/app.js
+          test -s web/core.js
+          test -s web/evidence.js
+          test -s web/styles.css
+          test -s web/data/sandbox-verification.json
+          node --check web/app.js
+          node --check web/core.js
+          node --check web/evidence.js
+      - name: Create direct-upload ZIP with index.html at archive root
+        run: |
+          python3 - <<'PY'
+          import zipfile
+          from pathlib import Path
+          root = Path('web')
+          with zipfile.ZipFile('StateRift-Cloudflare-Pages.zip', 'w', compression=zipfile.ZIP_DEFLATED) as output:
+              for f in sorted(root.rglob('*')):
+                  if f.is_file():
+                      output.write(f, f.relative_to(root).as_posix())
+          print('Created StateRift-Cloudflare-Pages.zip')
+          PY
+          unzip -l StateRift-Cloudflare-Pages.zip
+      - name: Publish Pages ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: StateRift-Cloudflare-Pages
+          path: StateRift-Cloudflare-Pages.zip
+          retention-days: 30
+          if-no-files-found: error
