@@ -13,9 +13,9 @@ StateRift helps developers reason about accounting and state invariants when asy
 - A fully local, dependency-free browser dashboard under `web/`.
 - Three deterministic, repeatable **modeled** fault scenarios: premature settlement, missing compensation after a failed transfer, and repeated processing of a successful request.
 - Side-by-side vulnerable and protected implementations, human-readable state traces and JSON export.
-- Seven automated checks covering scenario invariants, determinism, invalid inputs, and dashboard interactions (`npm test`).
-- A separate **experimental** NEAR SDK JS + NEAR Workspaces integration (`sandbox/`) with actual contract source for the premature-settlement test. It must be verified through the manual sandbox workflow before any end-to-end performance or security claim.
-- GitHub Actions model tests and an independent, manually triggered sandbox integration workflow (not yet executed successfully).
+- Automated checks covering scenario invariants, deterministic output, evidence validation, CI report parsing, and dashboard interactions (`npm test`).
+- An independent NEAR SDK JS + Workspaces integration (`sandbox/`) with **three receipt-level tests** against six compiled NEAR Wasm contracts. All three passed in [this GitHub Actions run](https://github.com/Slyzeal/StateRift/actions/runs/40077916424).
+- GitHub Actions model tests and independent Sandbox CI on pull requests, pushes, or manual runs. The Sandbox workflow generates a machine-readable verification artifact when all assertions pass.
 
 ## Try the local demo (no installation)
 
@@ -38,7 +38,7 @@ npm test
 node scripts/report.js > report.json
 ```
 
-The generated JSON file includes `engine: "deterministic-state-simulator"` so it cannot be mistaken for a NEAR Sandbox report.
+The generated JSON file includes `engine: "deterministic-state-simulator"` so it cannot be mistaken for NEAR Sandbox evidence. The website separately shows a **pinned historical snapshot** of the verified GitHub Actions Sandbox result. It does not fetch live chain state.
 
 ## Run the experimental NEAR Sandbox test
 
@@ -48,7 +48,7 @@ npm install
 npm run verify
 ```
 
-This path requires external downloads (NEAR SDK dependencies, Sandbox binary) and should be executed separately. See [`sandbox/README.md`](sandbox/README.md) for status and limitations.
+This path downloads dependencies and a Sandbox binary. See [`sandbox/README.md`](sandbox/README.md) for tests, real accounting limitations, and CI evidence artifacts. The CI snapshot in `web/data/sandbox-verification.json` is pinned to one specific run and **must not** be presented as live status.
 
 ## Deploy website for free
 
@@ -56,14 +56,14 @@ The demo is a **static website**. In Cloudflare Pages, connect this GitHub repos
 
 ## Roadmap
 
-1. Verify the actual NEAR Sandbox build and failure-callback test.
-2. Add concrete NEAR Sandbox tests for refunds, idempotency, and callback permissions.
-3. Generate machine-verifiable receipt traces and replayable test artifacts.
+1. Persist reusable Sandbox receipt traces, hashes and reproducible test artifacts.
+2. Add stronger failure-recovery tests that exercise real NEAR/FT token balances and callback authorizations.
+3. Evaluate security assumptions under adversarial concurrency and gas exhaustion.
 4. Introduce isolated scanning jobs only after strong process/resource isolation and abuse controls are implemented.
 
 ## Security & transparency
 
-Read [`docs/SECURITY.md`](docs/SECURITY.md). StateRift v0.1 is not a vulnerability scanner for arbitrary contracts and does not collect wallet keys or move real funds.
+Read [`docs/SECURITY.md`](docs/SECURITY.md). StateRift v0.3 is not a vulnerability scanner for arbitrary contracts and does not collect wallet keys or move real funds.
 
 ## License
 

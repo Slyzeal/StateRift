@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "kind": "verified-sandbox-snapshot",
+  "engine": "near-sandbox",
+  "capturedAt": "2026-10-24T08:27:58Z",
+  "runId": 40077916424,
+  "commit": "0d7de3c1ce7d69ad3249e58e005fc876a911fb98",
+  "runUrl": "https://github.com/Slyzeal/StateRift/actions/runs/40077916424",
+  "scope": "Purpose-written contract examples only; this is not a scan of uploaded contracts, a native-token refund test, or a parallel stress test.",
+  "tests": [
+    {
+      "id": "premature-settlement",
+      "name": "Premature settlement",
+      "passed": true,
+      "vulnerable": {
+        "completed": 1
+      },
+      "protected": {
+        "completed": 0,
+        "failed": 1
+      },
+      "method": "Failed async receipt and callback"
+    },
+    {
+      "id": "missing-refund",
+      "name": "Internal-credit recovery",
+      "passed": true,
+      "vulnerable": {
+        "available": 0,
+        "pending": 0,
+        "failures": 1
+      },
+      "protected": {
+        "available": 10,
+        "pending": 0,
+        "failures": 1
+      },
+      "method": "Failed outbound call, no transferred funds"
+    },
+    {
+      "id": "duplicate-callback",
+      "name": "Duplicate operation handling",
+      "passed": true,
+      "vulnerable": {
+        "completed": 2
+      },
+      "protected": {
+        "completed": 1,
+        "processed": true
+      },
+      "method": "Two deliberate requests with same operation ID"
+    }
+  ]
+}

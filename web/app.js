@@ -1,4 +1,5 @@
 import { runSuite, scenarios } from './core.js';
+import { validateEvidenceSnapshot } from './evidence.js';
 
 // A test run is executed only when the user presses Run.
 let report = null;
@@ -45,8 +46,8 @@ function drawResult() {
     <div class="invariant"><span>INVARIANT</span><p>${escapeHtml(scenario.invariant)}</p></div>
     ${ran ? `
       <div class="state-grid">
-        <div><span>Expected state</span><strong>${result.expected}</strong></div>
-        <div><span>Actual state</span><strong class="${result.passes ? 'good' : 'bad'}">${result.actual}</strong></div>
+        <div><span>Expected state</span><strong>${escapeHtml(result.expected)}</strong></div>
+        <div><span>Actual state</span><strong class="${result.passes ? 'good' : 'bad'}">${escapeHtml(result.actual)}</strong></div>
         <div><span>Verdict</span><strong class="${result.passes ? 'good' : 'bad'}">${result.passes ? 'Maintained' : 'Violated'}</strong></div>
       </div>
       <p class="impact">${escapeHtml(result.impact)}</p>
@@ -90,3 +91,39 @@ navButtons.forEach((button) => button.addEventListener('click', () => {
 }));
 drawList();
 drawResult();
+
+// A read-only, pinned CI snapshot, never confused with live simulation.
+// No wallets, RPCs or remote code are contacted to render this evidence.
+const evidenceContainer = document.getElementById('sandbox-evidence-results');
+if (evidenceContainer) {
+  fetch('./data/sandbox-verification.json', { cache: 'no-store' })
+    .then((response) => {
+      if (!response.ok) throw new Error(`Evidence file unavailable: HTTP ${response.status}`);
+      return response.json();
+    })
+    .then((data) => {
+      const evidence = validateEvidenceSnapshot(data);
+      const runUrl = escapeHtml(evidence.runUrl);
+      const observedDate = new Date(evidence.capturedAt).toLocaleDateString('en-US', {
+        year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC',
+      });
+      evidenceContainer.innerHTML = `
+        <div class="evidence-meta">
+          <span class="evidence-tag">3 / 3 TESTS PASSED</span>
+          <span>Verified on ${escapeHtml(observedDate)} · Run #${evidence.runId} · commit ${escapeHtml(evidence.commit.slice(0, 7))}</span>
+          <a href="${runUrl}" target="_blank" rel="noopener noreferrer">Inspect GitHub Actions logs ↗</a>
+        </div>
+        <div class="evidence-grid">${evidence.tests.map((item) => `
+          <article class="evidence-card">
+            <span class="evidence-check" aria-label="Test passed">✓ &nbsp; Verified test</span>
+            <h3>${escapeHtml(item.name)}</h3>
+            <p>${escapeHtml(item.method)}</p>
+            <div class="evidence-compare"><span>Vulnerable sample</span><code>${escapeHtml(JSON.stringify(item.vulnerable))}</code></div>
+            <div class="evidence-compare"><span>Protected sample</span><code>${escapeHtml(JSON.stringify(item.protected))}</code></div>
+          </article>`).join('')}</div>
+        <p class="evidence-disclaimer">${escapeHtml(evidence.scope)} <strong>This is a pinned historical result</strong>; it does not automatically change when future tests run.</p>`;
+    })
+    .catch(() => {
+      evidenceContainer.textContent = 'Published evidence snapshot unavailable. Check the repository Actions tab for verified test runs.';
+    });
+}

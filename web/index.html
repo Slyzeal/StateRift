@@ -15,7 +15,7 @@
       <div class="side-section">WORKSPACE</div>
       <a class="side-link current" href="#lab">▣ &nbsp; Fault Lab</a>
       <a class="side-link" href="https://github.com/Slyzeal/StateRift" target="_blank" rel="noopener noreferrer">◇ &nbsp; Source code ↗</a>
-      <div class="side-bottom"><span class="status-dot"></span> LOCAL MODEL ENGINE <small>v0.1 · no wallet required</small></div>
+      <div class="side-bottom"><span class="status-dot"></span> LOCAL MODEL ENGINE <small>v0.3 · no wallet required</small></div>
     </aside>
     <main id="lab">
       <header class="topbar"><span><span class="crumb">Workspace</span> <span class="slash">/</span> Fault laboratory</span><span class="chip">DEMO · MODEL ONLY</span></header>
@@ -27,6 +27,11 @@
           <div class="stat"><span>TEST SCENARIOS</span><strong>03</strong><small>Modeled async failure cases</small></div>
           <div class="stat"><span>IMPLEMENTATIONS</span><strong>06</strong><small>Vulnerable and protected</small></div>
           <div class="stat"><span>RUN ENVIRONMENT</span><strong>Local</strong><small>Deterministic JavaScript model</small></div>
+        </section>
+        <section id="sandbox-evidence" class="evidence-section" aria-label="Verified NEAR Sandbox executions">
+          <div class="section-heading"><div><div class="eyebrow">ACTUAL CONTRACT EXECUTION</div><h2>Sandbox evidence</h2></div><span class="section-note">Published CI snapshot · not a live scan</span></div>
+          <div class="evidence-intro">Six compiled NEAR contracts were tested on an isolated local NEAR Sandbox in GitHub Actions. These results are from purpose-built examples, independently of the browser simulation below.</div>
+          <div id="sandbox-evidence-results" class="evidence-results" aria-live="polite">Loading verified run snapshot...</div>
         </section>
         <section class="lab-section"><div class="section-heading"><div><div class="eyebrow">FAULT INJECTION</div><h2>Test scenarios</h2></div><span class="section-note" id="overview">Select a scenario to examine its invariant</span></div>
           <div class="lab-grid"><div class="scenario-panel"><div class="panel-caption">SCENARIO LIBRARY <span>3 presets</span></div><div id="scenario-list"></div><div class="panel-foot">Each preset is a deterministic, illustrative model of an asynchronous workflow, not a deployed NEAR contract scan.</div></div><div id="results" class="results-panel" aria-live="polite"></div></div>

@@ -25,4 +25,15 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --no-audit --no-fund
-      - run: npm run verify
+      - name: Verify actual compiled NEAR contracts
+        run: |
+          set -euo pipefail
+          npm run verify 2>&1 | tee sandbox-run.log
+          node scripts/generate-report.mjs sandbox-run.log reports/verification.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: near-sandbox-verification
+          path: |
+            sandbox/reports/verification.json
+            sandbox/sandbox-run.log
+          retention-days: 14
