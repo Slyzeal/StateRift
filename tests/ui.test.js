@@ -34,15 +34,25 @@ test('dashboard runs the engine on click and switches scenarios and protections'
       return children;
     }
   }
-  const ids = ['scenario-list', 'results', 'run-tests', 'download-report', 'overview'];
+  const ids = ['scenario-list', 'results', 'run-tests', 'download-report', 'overview', 'sandbox-evidence-results'];
   const nodes = Object.fromEntries(ids.map((id) => [id, new FakeElement(id)]));
   const oldDocument = globalThis.document;
+  const oldFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    assert.equal(url, './data/sandbox-verification.json');
+    const fs = await import('node:fs');
+    return { ok: true, json: async () => JSON.parse(fs.readFileSync(new URL('../web/data/sandbox-verification.json', import.meta.url), 'utf8')) };
+  };
   globalThis.document = {
     getElementById(id) { return nodes[id]; },
     querySelectorAll() { return []; },
   };
   try {
     await import('../web/app.js');
+    await new Promise((resolve) => setImmediate(resolve));
+    assert.match(nodes['sandbox-evidence-results'].innerHTML, /3 \/ 3 TESTS PASSED/);
+    assert.match(nodes['sandbox-evidence-results'].innerHTML, /GitHub Actions logs/);
+    assert.match(nodes['sandbox-evidence-results'].innerHTML, /historical result/);
     assert.match(nodes.results.innerHTML, /NOT RUN/);
     assert.equal(nodes['download-report'].disabled, true);
     nodes['run-tests'].click();
@@ -63,6 +73,8 @@ test('dashboard runs the engine on click and switches scenarios and protections'
     nodes['run-tests'].click();
     assert.match(nodes.results.innerHTML, />PASS</);
   } finally {
+    if (oldFetch === undefined) delete globalThis.fetch;
+    else globalThis.fetch = oldFetch;
     if (oldDocument === undefined) delete globalThis.document;
     else globalThis.document = oldDocument;
   }

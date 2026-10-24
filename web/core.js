@@ -16,12 +16,12 @@ const SCENARIOS = Object.freeze([
   },
   {
     id: 'missing-refund',
-    name: 'Missing failure refund',
+    name: 'Failed credit compensation',
     category: 'Callback state recovery',
     severity: 'high',
-    description: 'An unsuccessful transfer debits the internal ledger without restoration.',
-    invariant: 'failed transfers must restore the original internal balance',
-    failure: 'A downstream transfer fails after an internal debit.',
+    description: 'A failed outbound contract call debits an internal ledger without restoration; no actual token transfer is simulated.',
+    invariant: 'a failed outbound request must restore reserved internal credits',
+    failure: 'A downstream contract call fails after reserving internal credits.',
     expected: 'The account should still have its original balance.',
   },
   {
@@ -74,8 +74,8 @@ export function simulate(scenarioId, variant) {
     expected = 20;
     steps.push(trace('Initial state', 'Available internal balance', { balance }));
     balance -= amount;
-    steps.push(trace('Debit', 'Reserve 7 units for transfer', { balance }));
-    steps.push(trace('Remote failure', 'Outbound action failed; no value delivered', { balance }));
+    steps.push(trace('Debit', 'Reserve 7 internal credit units for an outbound operation', { balance }));
+    steps.push(trace('Remote failure', 'Outbound action failed; no external action completed', { balance }));
     if (secured) balance += amount;
     steps.push(trace('Finalize', secured ? 'Compensating refund applied' : 'Bug: missing compensation', { balance }));
     actual = balance;
