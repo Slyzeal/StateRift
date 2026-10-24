@@ -1,0 +1,13 @@
+{
+  "name": "staterift-sandbox",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "mkdir -p build && near-sdk-js build contracts/vulnerable.ts build/vulnerable.wasm && near-sdk-js build contracts/protected.ts build/protected.wasm",
+    "test": "node --test tests/*.test.mjs",
+    "verify": "npm run build && npm test"
+  },
+  "dependencies": { "near-sdk-js": "2.0.0", "near-workspaces": "5.0.0" },
+  "devDependencies": { "typescript": "5.6.3" }
+}

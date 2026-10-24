@@ -1,0 +1,27 @@
+name: Model tests and static site
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Deterministic model tests
+        run: npm test
+      - name: Produce illustrative JSON report
+        run: node scripts/report.js > /tmp/staterift-model-report.json
+      - name: Validate report type
+        run: node -e "const r=require('/tmp/staterift-model-report.json'); if(r.engine!=='deterministic-state-simulator'||r.scenarios.length!==3) process.exit(1)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: modeled-fault-report
+          path: /tmp/staterift-model-report.json
+          retention-days: 7

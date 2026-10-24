@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="description" content="StateRift — a transparent fault-injection lab for asynchronous NEAR smart-contract operations.">
+  <meta name="theme-color" content="#0c121c">
+  <title>StateRift | NEAR fault-testing lab</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="./"><span class="mark">S<span>/</span></span><span>state<span class="accent">rift</span><small>RELIABILITY LAB</small></span></a>
+      <div class="side-section">WORKSPACE</div>
+      <a class="side-link current" href="#lab">▣ &nbsp; Fault Lab</a>
+      <a class="side-link" href="https://github.com/Slyzeal/StateRift" target="_blank" rel="noopener noreferrer">◇ &nbsp; Source code ↗</a>
+      <div class="side-bottom"><span class="status-dot"></span> LOCAL MODEL ENGINE <small>v0.1 · no wallet required</small></div>
+    </aside>
+    <main id="lab">
+      <header class="topbar"><span><span class="crumb">Workspace</span> <span class="slash">/</span> Fault laboratory</span><span class="chip">DEMO · MODEL ONLY</span></header>
+      <div class="content">
+        <section class="hero"><div class="eyebrow"><span class="spark">◆</span> ASYNCHRONOUS SECURITY TESTING</div><h1>Find the failure.<br><em>Before the funds move.</em></h1><p>Explore common state-accounting bugs in asynchronous smart-contract workflows. Inspect the events, verify invariants, and compare vulnerable vs protected implementations.</p>
+          <div class="hero-actions"><button id="run-tests" class="primary">▶ &nbsp; Run fault simulations</button><button id="download-report" disabled class="secondary">↓ &nbsp; Export JSON report</button></div>
+        </section>
+        <section class="stats" aria-label="Lab summary">
+          <div class="stat"><span>TEST SCENARIOS</span><strong>03</strong><small>Modeled async failure cases</small></div>
+          <div class="stat"><span>IMPLEMENTATIONS</span><strong>06</strong><small>Vulnerable and protected</small></div>
+          <div class="stat"><span>RUN ENVIRONMENT</span><strong>Local</strong><small>Deterministic JavaScript model</small></div>
+        </section>
+        <section class="lab-section"><div class="section-heading"><div><div class="eyebrow">FAULT INJECTION</div><h2>Test scenarios</h2></div><span class="section-note" id="overview">Select a scenario to examine its invariant</span></div>
+          <div class="lab-grid"><div class="scenario-panel"><div class="panel-caption">SCENARIO LIBRARY <span>3 presets</span></div><div id="scenario-list"></div><div class="panel-foot">Each preset is a deterministic, illustrative model of an asynchronous workflow, not a deployed NEAR contract scan.</div></div><div id="results" class="results-panel" aria-live="polite"></div></div>
+        </section>
+        <footer><span>StateRift is an experimental developer tool. Not a security audit.</span><a href="https://github.com/Slyzeal/StateRift" target="_blank" rel="noopener noreferrer">View repository ↗</a></footer>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

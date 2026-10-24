@@ -1,0 +1,12 @@
+node_modules/
+sandbox/node_modules/
+sandbox/build/
+*.wasm
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+coverage/
+reports/
+.near-credentials/
