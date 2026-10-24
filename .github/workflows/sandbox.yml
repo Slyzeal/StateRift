@@ -1,6 +1,15 @@
-name: NEAR Sandbox (experimental)
+name: NEAR Sandbox integration
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'sandbox/**'
+      - '.github/workflows/sandbox.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'sandbox/**'
+      - '.github/workflows/sandbox.yml'
 permissions:
   contents: read
 jobs:

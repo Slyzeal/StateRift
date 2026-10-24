@@ -1,13 +1,18 @@
 {
   "name": "staterift-sandbox",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
-    "build": "mkdir -p build && near-sdk-js build contracts/vulnerable.ts build/vulnerable.wasm && near-sdk-js build contracts/protected.ts build/protected.wasm",
-    "test": "node --test tests/*.test.mjs",
+    "build": "mkdir -p build && for contract in vulnerable protected compensation-vulnerable compensation-protected idempotency-vulnerable idempotency-protected; do near-sdk-js build \"contracts/$contract.ts\" \"build/$contract.wasm\" || exit 1; done",
+    "test": "node --test --test-concurrency=1 tests/*.test.mjs",
     "verify": "npm run build && npm test"
   },
-  "dependencies": { "near-sdk-js": "2.0.0", "near-workspaces": "5.0.0" },
-  "devDependencies": { "typescript": "5.6.3" }
+  "dependencies": {
+    "near-sdk-js": "2.0.0",
+    "near-workspaces": "5.0.0"
+  },
+  "devDependencies": {
+    "typescript": "5.6.3"
+  }
 }
