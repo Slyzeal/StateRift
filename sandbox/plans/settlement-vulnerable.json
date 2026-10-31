@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "name": "settlement-should-not-complete-on-failure",
+  "steps": [
+    {"type":"call", "method":"start", "args":{}, "expect":"success"},
+    {"type":"assertView", "method":"get_completed", "args":{}, "equals":0}
+  ]
+}

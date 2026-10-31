@@ -68,3 +68,12 @@ Read [`docs/SECURITY.md`](docs/SECURITY.md). StateRift v0.3 is not a vulnerabili
 ## License
 
 MIT.
+
+## Working with your own NEAR contract (v0.4)
+
+- **Hosted bytecode inspection:** Select a compiled `.wasm` file on the website. StateRift inspects real imports and exports, identifies asynchronous host-call usage, computes SHA-256, and exports a structural report in your browser. It does **not** prove vulnerabilities.
+- **Actual Sandbox execution:** The separate developer runner accepts your compiled Wasm and a JSON plan with contract calls and state assertions. It executes those checks on a fresh local NEAR Sandbox and emits a real execution report.
+- The GitHub workflow tests the runner against both a correctly protected example and a deliberately vulnerable example. This proves the testing mechanism, not all arbitrary contracts.
+- **Public execution backend:** Not yet available on GitHub Pages; it is a static host. Untrusted public uploads require an isolated authenticated worker service.
+
+Read [Testing your own contract](docs/CONTRACT_TESTING.md) for the full procedure and security limits.

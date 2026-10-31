@@ -30,6 +30,7 @@
             <span>Verified evidence</span>
           </a>
         </nav>
+        <nav class="nav-links" aria-label="Contract inspection"><a class="side-link" href="#contract-inspector"><span class="nav-symbol" aria-hidden="true">◇</span><span>Inspect contract</span></a></nav>
         <p class="nav-label nav-label-secondary">DEVELOPMENT</p>
         <nav class="nav-links" aria-label="Development links">
           <a class="side-link" href="https://github.com/Slyzeal/StateRift" target="_blank" rel="noopener noreferrer">
@@ -66,8 +67,17 @@
           <div class="metric"><span class="metric-caption">EXECUTION MODE</span><div class="metric-number metric-mode"><span class="metric-dot"></span>Local <small>no wallet needed</small></div></div>
         </section>
 
+        <section id="contract-inspector" class="inspection-section" aria-labelledby="inspection-heading">
+          <div class="section-head"><div><p class="eyebrow">01 / YOUR CONTRACT</p><h2 id="inspection-heading">Inspect a real NEAR contract</h2><p class="section-description">Select a compiled .wasm file to inspect its actual host calls and public methods. Processing stays in your browser.</p></div><span class="inspection-label">LOCAL • NO KEY REQUIRED</span></div>
+          <div class="inspection-card">
+            <div class="inspection-controls"><label class="upload-label" for="contract-file">Select a compiled .wasm file <span>Up to 8 MiB</span></label><input id="contract-file" type="file" accept=".wasm,application/wasm"><button id="export-inspection" class="secondary" type="button" disabled>Export inspection JSON</button></div>
+            <div id="contract-inspection-result" class="inspection-output" aria-live="polite">No contract selected yet. This performs a genuine WASM structure inspection, not a simulated result.</div>
+            <div class="inspection-next"><strong>Need execution testing?</strong> Use the <a href="https://github.com/Slyzeal/StateRift/tree/main/sandbox" target="_blank" rel="noopener noreferrer">NEAR Sandbox runner</a> with your contract and a JSON test plan. Static hosting cannot run the Sandbox service.</div>
+          </div>
+        </section>
+
         <section class="lab-section" aria-labelledby="analysis-heading">
-          <div class="section-head"><div><p class="eyebrow">01 / MODEL EXPLORER</p><h2 id="analysis-heading">Analyze failure cases</h2><p class="section-description">Select a scenario to inspect its invariant and execution sequence.</p></div><div class="micro-note"><span class="micro-note-indicator"></span><span id="overview" aria-live="polite">Run the model to inspect state changes</span></div></div>
+          <div class="section-head"><div><p class="eyebrow">02 / MODEL EXPLORER</p><h2 id="analysis-heading">Analyze failure cases</h2><p class="section-description">Select a scenario to inspect its invariant and execution sequence.</p></div><div class="micro-note"><span class="micro-note-indicator"></span><span id="overview" aria-live="polite">Run the model to inspect state changes</span></div></div>
           <div class="lab-grid">
             <aside class="scenario-panel" aria-label="Available fault scenarios"><div class="panel-caption"><span>Scenario library</span><span class="panel-caption-count">03 cases</span></div><div id="scenario-list"></div><p class="panel-foot"><strong>About this lab</strong>These are deterministic examples, not scans of user-deployed contracts.</p></aside>
             <section id="results" class="results-panel" aria-label="Selected scenario analysis" aria-live="polite"></section>
@@ -75,7 +85,7 @@
         </section>
 
         <section id="sandbox-evidence" class="evidence-section" aria-labelledby="evidence-heading">
-          <div class="section-head"><div><p class="eyebrow">02 / REPRODUCIBLE RESULTS</p><h2 id="evidence-heading">Verified Sandbox evidence</h2><p class="section-description">Compiled NEAR contract examples executed in isolated GitHub Actions runners.</p></div><a class="text-link" href="https://github.com/Slyzeal/StateRift/actions" target="_blank" rel="noopener noreferrer">All CI executions <span aria-hidden="true">↗</span></a></div>
+          <div class="section-head"><div><p class="eyebrow">03 / REPRODUCIBLE RESULTS</p><h2 id="evidence-heading">Verified Sandbox evidence</h2><p class="section-description">Compiled NEAR contract examples executed in isolated GitHub Actions runners.</p></div><a class="text-link" href="https://github.com/Slyzeal/StateRift/actions" target="_blank" rel="noopener noreferrer">All CI executions <span aria-hidden="true">↗</span></a></div>
           <div class="evidence-frame"><div id="sandbox-evidence-results" class="evidence-results" aria-live="polite"><p class="loading-text">Loading published verification snapshot…</p></div></div>
         </section>
         <div class="disclosure"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v1"/></svg><p><strong>Scope of verification</strong> StateRift is an experimental developer tool. Browser models are illustrative; published Sandbox results come from purpose-built examples. This is not a security audit or a scanner for arbitrary contracts.</p></div>
@@ -84,5 +94,6 @@
     </div>
   </div>
   <script type="module" src="./app.js"></script>
+  <script type="module" src="./contract-upload.js"></script>
 </body>
 </html>
