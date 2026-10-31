@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "name": "settlement-protected",
+  "steps": [
+    {"type":"call", "method":"start", "args":{}, "expect":"success"},
+    {"type":"assertView", "method":"get_completed", "args":{}, "equals":0},
+    {"type":"assertView", "method":"get_failed", "args":{}, "equals":1}
+  ]
+}

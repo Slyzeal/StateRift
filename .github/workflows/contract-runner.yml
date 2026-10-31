@@ -1,0 +1,55 @@
+name: Developer contract runner integration
+on:
+  pull_request:
+    paths:
+      - 'sandbox/scripts/**'
+      - 'sandbox/plans/**'
+      - '.github/workflows/contract-runner.yml'
+      - 'web/wasm-inspector.js'
+  push:
+    branches: [main]
+    paths:
+      - 'sandbox/scripts/**'
+      - 'sandbox/plans/**'
+      - '.github/workflows/contract-runner.yml'
+      - 'web/wasm-inspector.js'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test-developer-runner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: sandbox
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Sandbox dependencies
+        run: npm install --no-audit --no-fund
+      - name: Compile example contracts
+        run: |
+          mkdir -p build reports
+          npx near-sdk-js build contracts/vulnerable.ts build/vulnerable.wasm
+          npx near-sdk-js build contracts/protected.ts build/protected.wasm
+      - name: Inspect a real compiled WASM binary
+        run: |
+          node --input-type=module -e "import {readFileSync} from 'node:fs';import {inspectWasm} from '../web/wasm-inspector.js';let r=inspectWasm(readFileSync('build/protected.wasm'));if(!r.exports.some(x=>x.name==='start'))throw new Error('start export missing');console.log('Inspected real NEAR bytecode:',r.imports.length,'imports');"
+      - name: Run real safe-contract test plan
+        run: node scripts/scan-contract.mjs --wasm build/protected.wasm --plan plans/settlement-protected.json --output reports/protected.json
+      - name: Confirm deliberately vulnerable contract fails its invariant
+        run: |
+          set +e
+          node scripts/scan-contract.mjs --wasm build/vulnerable.wasm --plan plans/settlement-vulnerable.json --output reports/vulnerable.json
+          code=$?
+          set -e
+          test "$code" -eq 1
+          node --input-type=module -e "import fs from 'node:fs';const good=JSON.parse(fs.readFileSync('reports/protected.json'));const bad=JSON.parse(fs.readFileSync('reports/vulnerable.json'));if(!good.passed||bad.passed||good.engine!=='near-sandbox'||bad.steps.at(-1).passed)process.exit(1);console.log('Verified real PASS and intentional FAIL reports');"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: user-contract-runner-examples
+          path: sandbox/reports/*.json
+          retention-days: 7
