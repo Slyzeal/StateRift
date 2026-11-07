@@ -36,4 +36,4 @@ jobs:
           path: |
             sandbox/reports/verification.json
             sandbox/sandbox-run.log
-          retention-days: 14
+          retention-days: 30
