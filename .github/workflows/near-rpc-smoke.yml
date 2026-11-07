@@ -19,6 +19,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Check browser CORS preflight on archival RPC
+        run: |
+          headers=$(curl -sS -D - -o /dev/null -X OPTIONS 'https://archival-rpc.testnet.fastnear.com' -H 'Origin: https://slyzeal.github.io' -H 'Access-Control-Request-Method: POST' -H 'Access-Control-Request-Headers: content-type')
+          echo "$headers" | grep -i 'access-control-allow-origin' || true
+          echo "$headers" | grep -i 'access-control-allow-methods' || true
+          echo "$headers" | grep -i 'access-control-allow-headers' || true
       - name: Check a documented archived testnet receipt (read-only)
         run: |
           node --input-type=module <<'NODE'
