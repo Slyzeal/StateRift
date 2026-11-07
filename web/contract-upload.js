@@ -28,6 +28,7 @@ if (picker && output) {
       const digest = await crypto.subtle.digest('SHA-256', bytes);
       const sha256 = [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('');
       previousReport = { ...inspected, filename: file.name, sha256, inspectedAt: new Date().toISOString(), execution: 'none: static inspection only' };
+      document.dispatchEvent(new CustomEvent('staterift:wasm-inspected', { detail: {filename:file.name, signals:inspected.signals} }));
       exportButton.disabled = false;
       const out = inspected.signals;
       output.innerHTML = `

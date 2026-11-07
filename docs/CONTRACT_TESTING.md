@@ -6,6 +6,12 @@ StateRift v0.4 has **two different real inputs**. The hosted website can read yo
 
 Go to **Inspect contract**, select a compiled `.wasm` file (8 MiB maximum), and export the structural inspection. No private keys, wallet connection, or network RPC is involved. Imported `promise_*` host calls indicate a possible asynchronous execution surface; their presence does not prove a vulnerability, and their absence does not prove safety.
 
+## Build a test plan in your browser
+
+Go to **Build a NEAR Sandbox test plan** below the WASM inspector. Click **Load sample** to see the protected-settlement example, or construct your own `call` and `assertView` steps. The builder uses the **same shared validation schema** as the Sandbox CLI. If a WASM file has been inspected, its exported function names are offered as autocomplete suggestions—not proof that any given method will succeed. Click **Validate & export JSON**.
+
+**This does not execute a contract in GitHub Pages.** The actual Wasm and plan must still be run by the local Sandbox CLI in an isolated machine. Never upload sensitive keys or secrets.
+
 ## Execute an actual contract
 
 Requirements: Node.js 22+, enough RAM/storage to run the NEAR Sandbox binary, and network access for one-time dependency installation. Do not run untrusted contracts on a sensitive machine; use a disposable VM/container with no secrets and with resource limits.
@@ -36,11 +42,15 @@ Plan example:
 }
 ```
 
-- `call` invokes your contract as the generated `tester` account. Set `expect` to `failure` if you are deliberately testing a rejected call. If the contract catches an asynchronous subreceipt failure and returns normally, set `expect` to `success`, then **assert state** with `assertView`.
+- `call` invokes your contract as the generated `tester` account. Optionally set `"expectReceiptFailure": true` to assert an actual failed asynchronous receipt, even when a later callback makes the overall call appear successful. `false` asserts no failed receipts, and omitting it disables this extra assertion. This requires receipt data from near-workspaces.  Set `expect` to `failure` if you are deliberately testing a rejected call. If the contract catches an asynchronous subreceipt failure and returns normally, set `expect` to `success`, then **assert state** with `assertView`.
 - `assertView` queries an actual Sandbox contract method and compares the JSON value to `equals` exactly (types matter: `100` differs from `"100"`).
 - At most 40 steps; methods must be valid WASM export identifiers; gas limit is 5–300 Tgas.
 - Exit code 0 = all checks passed; 1 = one or more assertions failed; 2 = invalid invocation, deployment failure or runner error.
-- Output JSON includes actual outcomes, assertion status, the compiled Wasm SHA-256 and execution timestamp; it does not fabricate detected bugs.
+- Output JSON includes actual call outcomes, individual receipt summaries (up to 24 per call), gas information when available, receipt-failure assertions, the compiled Wasm SHA-256 and execution timestamp; it does not fabricate detected bugs.
+
+### Review the execution evidence in the web app
+
+Once the CLI writes `contract-report.json`, open the StateRift website's **Inspect a Sandbox test report** section and select the file. The browser shows each step's expected and actual results, receipts, and gas without uploading the JSON anywhere. A file you provide is labeled **unverified user-provided evidence**, even if its format passes validation. For independent confirmation, compare with the published GitHub Actions integration test artifacts.
 
 ## Verified integration
 

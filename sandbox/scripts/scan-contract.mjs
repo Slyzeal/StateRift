@@ -49,15 +49,42 @@ export async function runContractPlan({ wasmPath, planPath, outputPath }) {
     const contract = await root.devDeploy(wasmPath);
     for (const step of plan.steps) {
       if (step.type === 'call') {
-        let succeeded = true, error = null;
+        let succeeded = false, error = null, execution = null;
         try {
-          await caller.call(contract, step.method, step.args, { gas: step.gas });
+          // callRaw captures *individual async receipt outcomes*. A successful
+          // final callback can still conceal a failed remote receipt.
+          execution = await caller.callRaw(contract, step.method, step.args, { gas: step.gas });
+          succeeded = !execution.failed;
         } catch (e) {
-          succeeded = false;
           error = String(e?.message ?? e).slice(0, 2000);
         }
-        const passed = succeeded === (step.expect === 'success');
-        report.steps.push({ type: 'call', method: step.method, expect: step.expect, observed: succeeded ? 'success' : 'failure', passed, ...(error ? { error } : {}) });
+        const outcomes = Array.isArray(execution?.receipts_outcomes) ? execution.receipts_outcomes : [];
+        const receiptFailures = outcomes.filter((r) => r?.outcome?.status && Object.hasOwn(r.outcome.status, 'Failure')).length;
+        const receiptMatch = step.expectReceiptFailure === undefined || (outcomes.length > 0 && (receiptFailures > 0) === step.expectReceiptFailure);
+        const passed = succeeded === (step.expect === 'success') && receiptMatch;
+        const receipts = outcomes.slice(0, 24).map((r) => {
+          const status = r?.outcome?.status ?? {};
+          return {
+            id: String(r?.id ?? '').slice(0, 120),
+            executor: String(r?.outcome?.executor_id ?? '').slice(0, 120),
+            status: Object.hasOwn(status, 'Failure') ? 'failure' :
+              (Object.hasOwn(status, 'SuccessValue') || Object.hasOwn(status, 'SuccessReceiptId')) ? 'success' : 'unknown',
+            gasBurnt: String(r?.outcome?.gas_burnt ?? '0'),
+            logs: Array.isArray(r?.outcome?.logs)
+              ? r.outcome.logs.slice(0, 6).map(line => String(line).slice(0, 500)) : [],
+            ...(Object.hasOwn(status, 'Failure')
+              ? { error: JSON.stringify(status.Failure).slice(0, 900) } : {}),
+          };
+        });
+        report.steps.push({
+          type: 'call', method: step.method, expect: step.expect,
+          observed: succeeded ? 'success' : 'failure', passed,
+          receiptCount: outcomes.length, receiptFailures, receiptTruncated: outcomes.length > 24,
+          ...(step.expectReceiptFailure === undefined ? {} : { expectReceiptFailure: step.expectReceiptFailure }),
+          ...(execution?.result?.transaction?.hash ? { transactionHash: String(execution.result.transaction.hash) } : {}),
+          ...(execution ? { gasBurnt: String(execution.gas_burnt ?? '0'), durationMs: execution.durationMs, receipts } : {}),
+          ...(error ? { error } : {}),
+        });
       } else {
         let actual = null, error = null, passed = false;
         try {
