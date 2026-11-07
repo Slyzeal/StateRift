@@ -1,7 +1,11 @@
-name: Live NEAR receipt lookup smoke (manual)
+name: Live NEAR receipt lookup smoke
 
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/near-rpc-smoke.yml'
+      - 'web/transaction-evidence.js'
 
 permissions:
   contents: read
