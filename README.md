@@ -12,7 +12,7 @@ StateRift helps developers reason about accounting and state invariants when asy
 
 ## What is implemented
 
-- A fully local, dependency-free browser dashboard under `web/`.
+- A dependency-free static browser workspace under `web/`. WASM inspection, plan preparation, and report review stay local; live NEAR transaction lookups use read-only RPC on demand.
 - Three deterministic, repeatable **modeled** fault scenarios: premature settlement, missing compensation after a failed transfer, and repeated processing of a successful request.
 - Side-by-side vulnerable and protected implementations, human-readable state traces and JSON export.
 - Automated checks covering scenario invariants, deterministic output, evidence validation, CI report parsing, and dashboard interactions (`npm test`).
@@ -54,7 +54,7 @@ This path downloads dependencies and a Sandbox binary. See [`sandbox/README.md`]
 
 ## Deploy website for free
 
-The demo is a **static website**. In Cloudflare Pages, connect this GitHub repository, select the `main` branch, use **no framework preset**, set output directory to `web`, and leave the build command empty. Pages publishes the static demo. The sandbox test runner remains on GitHub Actions, not Cloudflare Pages.
+The website is deployed to **GitHub Pages** using [the automated Pages workflow](.github/workflows/deploy-pages.yml). No hosting key or paid service is needed. It serves the static `web/` directory. The standalone Sandbox test runner executes locally or in GitHub Actions—not on GitHub Pages. A separately hosted, secure arbitrary-WASM execution service has **not** been deployed.
 
 ## Roadmap
 
@@ -65,7 +65,7 @@ The demo is a **static website**. In Cloudflare Pages, connect this GitHub repos
 
 ## Security & transparency
 
-Read [`docs/SECURITY.md`](docs/SECURITY.md). StateRift v0.3 is not a vulnerability scanner for arbitrary contracts and does not collect wallet keys or move real funds.
+Read [`docs/SECURITY.md`](docs/SECURITY.md). StateRift is not a vulnerability scanner for arbitrary contracts and does not collect wallet keys or move real funds.
 
 ## License
 
