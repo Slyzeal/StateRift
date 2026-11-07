@@ -57,3 +57,16 @@ test('transaction inspector is discoverable and labels data provenance',()=>{
   assert.match(html,/src="\.\/transaction-inspector.js"/);
   assert.match(html,/live read-only NEAR RPC data/i);
 });
+
+test('archival fallback returns real historical receipts after primary RPC fails',async()=>{
+  const visited=[];
+  const fetcher=async(url)=>{
+    visited.push(url);
+    if(url===RPC.testnet) return {ok:true,json:async()=>({error:{message:'UNKNOWN_TRANSACTION'}})};
+    return {ok:true,json:async()=>({result:good})};
+  };
+  const result=await readTransaction({network:'testnet',hash,signer},fetcher);
+  assert.equal(visited.length,2);
+  assert.match(visited[1],/archival-rpc\.testnet\.fastnear\.com/);
+  assert.equal(result.receiptFailures,1);
+});
