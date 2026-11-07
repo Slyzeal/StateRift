@@ -16,7 +16,7 @@ StateRift helps developers reason about accounting and state invariants when asy
 - Three deterministic, repeatable **modeled** fault scenarios: premature settlement, missing compensation after a failed transfer, and repeated processing of a successful request.
 - Side-by-side vulnerable and protected implementations, human-readable state traces and JSON export.
 - Automated checks covering scenario invariants, deterministic output, evidence validation, CI report parsing, and dashboard interactions (`npm test`).
-- An independent NEAR SDK JS + Workspaces integration (`sandbox/`) with **three receipt-level tests** against six compiled NEAR Wasm contracts. All three passed in [this GitHub Actions run](https://github.com/Slyzeal/StateRift/actions/runs/40077916424).
+- An independent NEAR SDK JS + Workspaces integration (`sandbox/`) with **three original receipt-level scenarios** against six compiled NEAR Wasm contracts and an additional private-callback authorization test. The three historical evidence scenarios passed in [this pinned GitHub Actions run](https://github.com/Slyzeal/StateRift/actions/runs/40077916424); check [current Sandbox CI](https://github.com/Slyzeal/StateRift/actions/workflows/sandbox.yml) for newer runs.
 - GitHub Actions model tests and independent Sandbox CI on pull requests, pushes, or manual runs. The Sandbox workflow generates a machine-readable verification artifact when all assertions pass.
 
 ## Try the local demo (no installation)
