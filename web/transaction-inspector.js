@@ -1,8 +1,9 @@
-import {readTransaction} from './transaction-evidence.js';
+import {readTransaction, VERIFIED_SAMPLE} from './transaction-evidence.js';
 const form=document.getElementById('tx-form');
 const output=document.getElementById('tx-output');
 const exportButton=document.getElementById('tx-export');
 const submit=form?.querySelector('button[type="submit"]');
+const sampleButton=document.getElementById('tx-sample');
 let lastResult;
 const append=(parent, tag, value, cls)=>{
   const node=document.createElement(tag);
@@ -12,6 +13,12 @@ const append=(parent, tag, value, cls)=>{
   return node;
 };
 if(form && output && submit && exportButton) {
+  sampleButton?.addEventListener('click',()=>{
+    form.elements.namedItem('network').value=VERIFIED_SAMPLE.network;
+    form.elements.namedItem('hash').value=VERIFIED_SAMPLE.hash;
+    form.elements.namedItem('signer').value=VERIFIED_SAMPLE.signer;
+    form.requestSubmit();
+  });
   form.addEventListener('submit',async(event)=>{
     event.preventDefault();
     exportButton.disabled=true;
