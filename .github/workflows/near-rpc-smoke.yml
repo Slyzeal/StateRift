@@ -1,0 +1,44 @@
+name: Live NEAR receipt lookup smoke (manual)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  receipt-lookup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check a documented archived testnet receipt (read-only)
+        run: |
+          node --input-type=module <<'NODE'
+          const hash='CVyG2xLJ6fuKCtULAxMnWTh2GL5ey2UUiTcgYT3M6Pow';
+          const signer='mike.testnet';
+          const urls=[
+            'https://archival-rpc.testnet.fastnear.com',
+            'https://rpc.testnet.near.org'
+          ];
+          const body=JSON.stringify({
+            jsonrpc:'2.0',id:'staterift-smoke',method:'tx',
+            params:{tx_hash:hash,sender_account_id:signer,wait_until:'FINAL'}
+          });
+          let passed=false;
+          for(const url of urls) {
+            try {
+              const res=await fetch(url,{method:'POST',headers:{'content-type':'application/json'},body,signal:AbortSignal.timeout(12000)});
+              const json=await res.json();
+              if(res.ok && json.result?.transaction?.signer_id===signer && Array.isArray(json.result?.receipts_outcome)) {
+                console.log('Validated real receipt:',url,'final status:',json.result.final_execution_status,'receipt count:',json.result.receipts_outcome.length);
+                passed=true;break;
+              }
+              console.log('Unavailable:',url,'status',res.status,'RPC error:',json.error?.message||'none');
+            }catch(e){console.log('Unavailable:',url,e.message);}
+          }
+          if(!passed) process.exit(1);
+          NODE
