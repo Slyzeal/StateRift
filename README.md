@@ -81,6 +81,12 @@ MIT.
 Read [Testing your own contract](docs/CONTRACT_TESTING.md) for the full procedure and security limits.
 
 
+## Guided contract testing workflow
+
+The public website now includes a **test-plan builder** next to WASM inspection. It uses the same validator as the local runner, can suggest exported methods from the inspected binary, and exports a validated JSON test plan. The separate near-workspaces CLI runs the contract in a fresh NEAR Sandbox, including optional failed-receipt assertions and state checks. Its machine-readable report can be imported into the browser's **report reviewer** for a clear step-by-step inspection. Reports provided by users are labeled **unverified**, unlike pinned GitHub CI evidence.
+
+This is not one-click public execution. GitHub Pages does not run untrusted contracts server-side.
+
 ## Real transaction evidence explorer (v0.5)
 
 The website also provides a **read-only NEAR transaction receipt explorer** for mainnet and testnet. Supply the transaction hash and its signer account, or press **Try verified testnet example** to inspect a known historical NEAR transaction with a live RPC request. FastNear archival RPC is a fallback for transactions absent from regular RPC state. It shows overall status, failed receipts, observed logs, receipt gas, NearBlocks links, and exports the observed result as JSON.
