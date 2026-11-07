@@ -25,6 +25,7 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.2"/><rect x="14" y="3" width="7" height="7" rx="1.2"/><rect x="3" y="14" width="7" height="7" rx="1.2"/><rect x="14" y="14" width="7" height="7" rx="1.2"/></svg>
             <span>Fault laboratory</span>
           </a>
+          <a class="side-link" href="#tx-inspector"><span class="nav-symbol" aria-hidden="true">◎</span><span>Live transactions</span></a>
           <a class="side-link" href="#sandbox-evidence">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 20 6v6c0 5-3.4 7.8-8 9-4.6-1.2-8-4-8-9V6l8-3Z"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/></svg>
             <span>Verified evidence</span>
@@ -76,8 +77,29 @@
           </div>
         </section>
 
+
+        <section id="tx-inspector" class="tx-section" aria-labelledby="tx-heading">
+          <div class="section-head">
+            <div><p class="eyebrow">02 / LIVE CHAIN EVIDENCE</p><h2 id="tx-heading">Inspect a NEAR transaction</h2>
+              <p class="section-description">Read the actual execution receipts, status and gas for a real transaction. No wallet or key required.</p></div>
+            <span class="inspection-label">READ ONLY · LIVE RPC</span>
+          </div>
+          <div class="tx-card">
+            <form id="tx-form" class="tx-form">
+              <label>Network<select name="network" aria-label="NEAR network"><option value="mainnet">NEAR Mainnet</option><option value="testnet">NEAR Testnet</option></select></label>
+              <label>Transaction hash<input name="hash" type="text" required placeholder="Base58 transaction hash" autocomplete="off" spellcheck="false" maxlength="60"></label>
+              <label>Signer account<input name="signer" type="text" required placeholder="account.near or account.testnet" autocomplete="off" spellcheck="false" maxlength="64"></label>
+              <button class="primary" type="submit">Inspect receipts ↗</button>
+              <button class="secondary" id="tx-sample" type="button">Try verified testnet example</button>
+              <button class="secondary" id="tx-export" type="button" disabled>Export evidence</button>
+            </form>
+            <div id="tx-output" class="tx-output" aria-live="polite"><p class="tx-empty">Enter a transaction hash and the exact signer account. Results come from live read-only NEAR RPC data; they are not simulations or automatic vulnerability findings.</p></div>
+            <div class="tx-footer">If a transaction has failed receipts, that is an observed execution result—not proof of an exploitable security bug. RPC access requires connectivity and may be subject to provider limits.</div>
+          </div>
+        </section>
+
         <section class="lab-section" aria-labelledby="analysis-heading">
-          <div class="section-head"><div><p class="eyebrow">02 / MODEL EXPLORER</p><h2 id="analysis-heading">Analyze failure cases</h2><p class="section-description">Select a scenario to inspect its invariant and execution sequence.</p></div><div class="micro-note"><span class="micro-note-indicator"></span><span id="overview" aria-live="polite">Run the model to inspect state changes</span></div></div>
+          <div class="section-head"><div><p class="eyebrow">03 / MODEL EXPLORER</p><h2 id="analysis-heading">Analyze failure cases</h2><p class="section-description">Select a scenario to inspect its invariant and execution sequence.</p></div><div class="micro-note"><span class="micro-note-indicator"></span><span id="overview" aria-live="polite">Run the model to inspect state changes</span></div></div>
           <div class="lab-grid">
             <aside class="scenario-panel" aria-label="Available fault scenarios"><div class="panel-caption"><span>Scenario library</span><span class="panel-caption-count">03 cases</span></div><div id="scenario-list"></div><p class="panel-foot"><strong>About this lab</strong>These are deterministic examples, not scans of user-deployed contracts.</p></aside>
             <section id="results" class="results-panel" aria-label="Selected scenario analysis" aria-live="polite"></section>
@@ -85,7 +107,7 @@
         </section>
 
         <section id="sandbox-evidence" class="evidence-section" aria-labelledby="evidence-heading">
-          <div class="section-head"><div><p class="eyebrow">03 / REPRODUCIBLE RESULTS</p><h2 id="evidence-heading">Verified Sandbox evidence</h2><p class="section-description">Compiled NEAR contract examples executed in isolated GitHub Actions runners.</p></div><a class="text-link" href="https://github.com/Slyzeal/StateRift/actions" target="_blank" rel="noopener noreferrer">All CI executions <span aria-hidden="true">↗</span></a></div>
+          <div class="section-head"><div><p class="eyebrow">04 / REPRODUCIBLE RESULTS</p><h2 id="evidence-heading">Verified Sandbox evidence</h2><p class="section-description">Compiled NEAR contract examples executed in isolated GitHub Actions runners.</p></div><a class="text-link" href="https://github.com/Slyzeal/StateRift/actions" target="_blank" rel="noopener noreferrer">All CI executions <span aria-hidden="true">↗</span></a></div>
           <div class="evidence-frame"><div id="sandbox-evidence-results" class="evidence-results" aria-live="polite"><p class="loading-text">Loading published verification snapshot…</p></div></div>
         </section>
         <div class="disclosure"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v1"/></svg><p><strong>Scope of verification</strong> StateRift is an experimental developer tool. Browser models are illustrative; published Sandbox results come from purpose-built examples. This is not a security audit or a scanner for arbitrary contracts.</p></div>
@@ -95,5 +117,6 @@
   </div>
   <script type="module" src="./app.js"></script>
   <script type="module" src="./contract-upload.js"></script>
+  <script type="module" src="./transaction-inspector.js"></script>
 </body>
 </html>

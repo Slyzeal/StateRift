@@ -8,6 +8,8 @@
 
 StateRift helps developers reason about accounting and state invariants when asynchronous cross-contract calls fail. It is an **early proof of concept**, not a production audit tool.
 
+**Judge quick start:** [run StateRift in 5 minutes](docs/JUDGE_QUICKSTART.md) · [live website](https://slyzeal.github.io/StateRift/) · [verified Sandbox workflow](https://github.com/Slyzeal/StateRift/actions/workflows/contract-runner.yml).
+
 ## What is implemented
 
 - A fully local, dependency-free browser dashboard under `web/`.
@@ -77,3 +79,10 @@ MIT.
 - **Public execution backend:** Not yet available on GitHub Pages; it is a static host. Untrusted public uploads require an isolated authenticated worker service.
 
 Read [Testing your own contract](docs/CONTRACT_TESTING.md) for the full procedure and security limits.
+
+
+## Real transaction evidence explorer (v0.5)
+
+The website also provides a **read-only NEAR transaction receipt explorer** for mainnet and testnet. Supply the transaction hash and its signer account, or press **Try verified testnet example** to inspect a known historical NEAR transaction with a live RPC request. FastNear archival RPC is a fallback for transactions absent from regular RPC state. It shows overall status, failed receipts, observed logs, receipt gas, NearBlocks links, and exports the observed result as JSON.
+
+An RPC response can be unavailable depending on CORS, provider limits, or connectivity; failures are surfaced transparently. This feature is **not a vulnerability scanner**, and a failed receipt alone is not proof of exploitation.
