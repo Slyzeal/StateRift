@@ -70,6 +70,10 @@ export async function runContractPlan({ wasmPath, planPath, outputPath }) {
             status: Object.hasOwn(status, 'Failure') ? 'failure' :
               (Object.hasOwn(status, 'SuccessValue') || Object.hasOwn(status, 'SuccessReceiptId')) ? 'success' : 'unknown',
             gasBurnt: String(r?.outcome?.gas_burnt ?? '0'),
+            logs: Array.isArray(r?.outcome?.logs)
+              ? r.outcome.logs.slice(0, 6).map(line => String(line).slice(0, 500)) : [],
+            ...(Object.hasOwn(status, 'Failure')
+              ? { error: JSON.stringify(status.Failure).slice(0, 900) } : {}),
           };
         });
         report.steps.push({
