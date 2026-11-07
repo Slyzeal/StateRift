@@ -8,6 +8,15 @@ export const RPC = Object.freeze({
   mainnet: 'https://rpc.mainnet.near.org',
   testnet: 'https://rpc.testnet.near.org',
 });
+export const ARCHIVAL_RPC = Object.freeze({
+  mainnet:'https://archival-rpc.mainnet.fastnear.com',
+  testnet:'https://archival-rpc.testnet.fastnear.com',
+});
+export const VERIFIED_SAMPLE = Object.freeze({
+  network:'testnet',
+  hash:'CVyG2xLJ6fuKCtULAxMnWTh2GL5ey2UUiTcgYT3M6Pow',
+  signer:'mike.testnet',
+});
 export function checkInput({network,hash,signer}) {
   if (!Object.hasOwn(RPC, network)) throw new Error('Choose mainnet or testnet.');
   if (!HASH.test(hash || '')) throw new Error('Enter a valid base58 NEAR transaction hash.');
@@ -64,17 +73,20 @@ export function summarizeTransaction(data, network, hash, signer) {
   };
 }
 export async function readTransaction({network,hash,signer},fetcher=fetch,{signal}={}) {
-  const params=checkInput({network,hash,signer});
-  const response=await fetcher(RPC[network],{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({jsonrpc:'2.0',id:'staterift-readonly',method:'tx',params:{tx_hash:hash,sender_account_id:signer,wait_until:'EXECUTED_OPTIMISTIC'}}),
-    signal,
-  });
-  if (!response.ok) throw new Error('RPC HTTP '+response.status+'. Try again or verify the endpoint is available.');
-  const json=await response.json();
-  if (json.error) {
-    const cause=bounded(json.error?.cause?.name || json.error?.message || 'RPC rejected the request.',110);
-    throw new Error(cause+'. Check the transaction hash, signer, and network.');
+  checkInput({network,hash,signer});
+  const body=JSON.stringify({jsonrpc:'2.0',id:'staterift-readonly',method:'tx',params:{tx_hash:hash,sender_account_id:signer,wait_until:'FINAL'}});
+  let lastError;
+  for(const url of [RPC[network],ARCHIVAL_RPC[network]]) {
+    try {
+      const response=await fetcher(url,{method:'POST',headers:{'Content-Type':'application/json'},body,signal});
+      if(!response.ok) throw new Error('RPC HTTP '+response.status);
+      const json=await response.json();
+      if(json.error) throw new Error(bounded(json.error?.cause?.name || json.error?.message || 'RPC rejected the request.',110));
+      return summarizeTransaction(json.result,network,hash,signer);
+    } catch(error) {
+      if(signal?.aborted) throw error;
+      lastError=error;
+    }
   }
-  return summarizeTransaction(json.result,network,hash,signer);
+  throw new Error((lastError?.message || 'RPC unavailable')+'. Check the transaction hash, signer, network, or RPC provider access.');
 }
