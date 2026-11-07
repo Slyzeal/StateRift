@@ -33,8 +33,12 @@ if(input&&output) {
           if(step.receiptCount!==undefined)append(li,'div','Actual receipts: '+step.receiptCount+' · Failed receipts: '+step.receiptFailures,'report-detail');
           if(step.expectReceiptFailure!==undefined)append(li,'div','Required async receipt failure: '+String(step.expectReceiptFailure),'report-detail');
           if(step.error)append(li,'pre',String(step.error).slice(0,2000),'report-error');
-          for(const receipt of (step.receipts||[]).slice(0,24))
+          for(const receipt of (step.receipts||[]).slice(0,24)) {
             append(li,'div',String(receipt.executor||'Unknown')+' · '+String(receipt.status||'unknown')+' · gas '+String(receipt.gasBurnt||'0'),'report-receipt');
+            if(receipt.error) append(li,'pre',String(receipt.error).slice(0,900),'report-error');
+            for(const line of (Array.isArray(receipt.logs)?receipt.logs:[]).slice(0,6))
+              append(li,'pre',String(line).slice(0,500),'report-detail');
+          }
         } else {
           append(li,'pre','Expected: '+JSON.stringify(step.expected)+'\nObserved: '+JSON.stringify(step.actual),'report-detail');
           if(step.error)append(li,'pre',String(step.error).slice(0,2000),'report-error');
