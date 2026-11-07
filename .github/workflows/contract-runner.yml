@@ -78,4 +78,4 @@ jobs:
         with:
           name: user-contract-runner-examples
           path: sandbox/reports/*.json
-          retention-days: 7
+          retention-days: 30
