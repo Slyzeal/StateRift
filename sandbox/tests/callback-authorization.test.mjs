@@ -17,10 +17,9 @@ test('protected settlement callback rejects an external attacker', {timeout:180_
     const failed=await protectedContract.view('get_failed',{});
     assert.equal(Number(completed),0,'unauthorized callback must not settle an operation');
     assert.equal(Number(failed),0,'unauthorized callback must not mutate failure ledger');
-    console.log(JSON.stringify({
-      engine:'near-sandbox',scenario:'external-private-callback-rejected',
-      attackerCall:'rejected',protected:{completed,failed}
-    }));
+    // This extra adversarial test is verified by node:test. Keep the original
+    // three-scenario evidence JSON schema unchanged for the published snapshot.
+    console.log('NEAR Sandbox callback access control verified: external call rejected; completed=0; failed=0');
   } finally {
     await worker.tearDown();
   }
