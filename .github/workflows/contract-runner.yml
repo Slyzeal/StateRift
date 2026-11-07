@@ -48,6 +48,32 @@ jobs:
           set -e
           test "$code" -eq 1
           node --input-type=module -e "import fs from 'node:fs';const good=JSON.parse(fs.readFileSync('reports/protected.json'));const bad=JSON.parse(fs.readFileSync('reports/vulnerable.json'));if(!good.passed||bad.passed||good.engine!=='near-sandbox'||bad.steps.at(-1).passed)process.exit(1);console.log('Verified real PASS and intentional FAIL reports');"
+      - name: Assert saved reports prove actual failed async receipts
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const good=JSON.parse(fs.readFileSync('reports/protected.json','utf8'));
+          const bad=JSON.parse(fs.readFileSync('reports/vulnerable.json','utf8'));
+          const passStep=good.steps.find(step=>step.type==='call');
+          const failStep=bad.steps.find(step=>step.type==='call');
+          if(!passStep||!failStep)throw new Error('Call steps not recorded');
+          if(passStep.receiptFailures<1||failStep.receiptFailures<1)
+            throw new Error('Expected failed async receipt missing from actual execution evidence');
+          if(!good.passed||bad.passed)throw new Error('Expected safe and vulnerable verdicts reversed');
+          if(good.wasmSha256===bad.wasmSha256)throw new Error('WASM source fingerprints must differ');
+          const summary=[
+            '# StateRift real NEAR Sandbox verification',
+            '',
+            '| Contract | Test assertions | Async failed receipts |',
+            '|---|---|---|',
+            '| Protected | PASS ('+good.steps.filter(x=>x.passed).length+'/'+good.steps.length+') | '+passStep.receiptFailures+' |',
+            '| Vulnerable | Expected invariant FAIL ('+bad.steps.filter(x=>x.passed).length+'/'+bad.steps.length+') | '+failStep.receiptFailures+' |',
+            '',
+            'These are real local NEAR Sandbox execution receipts for intentionally constructed examples, not a vulnerability scan of arbitrary contracts.',
+          ].join('\n');
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,summary+'\n');
+          console.log('Verified genuine receipt-level failure evidence in both reports');
+          NODE
       - uses: actions/upload-artifact@v4
         with:
           name: user-contract-runner-examples
