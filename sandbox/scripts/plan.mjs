@@ -16,7 +16,11 @@ export function validatePlan(plan) {
       const gas = step.gas ?? gasDefault;
       if (!['success', 'failure'].includes(expect)) throw new Error(`Step ${idx + 1}: invalid expect`);
       if (typeof gas !== 'string' || !/^\d{1,15}$/.test(gas) || BigInt(gas) > 300_000_000_000_000n || BigInt(gas) < 5_000_000_000_000n) throw new Error(`Step ${idx + 1}: gas outside supported range`);
-      return { type: 'call', method: step.method, args: step.args ?? {}, expect, gas };
+      if (step.expectReceiptFailure !== undefined && typeof step.expectReceiptFailure !== 'boolean') throw new Error(`Step ${idx + 1}: expectReceiptFailure must be boolean`);
+      return {
+        type: 'call', method: step.method, args: step.args ?? {}, expect, gas,
+        ...(step.expectReceiptFailure !== undefined ? { expectReceiptFailure:step.expectReceiptFailure } : {})
+      };
     }
     if (!Object.hasOwn(step, 'equals')) throw new Error(`Step ${idx + 1}: assertView must define equals`);
     // Deep JSON type guards, and report limits.
