@@ -14,9 +14,9 @@ Source: [FastNear RPC transaction examples](https://docs.fastnear.com/rpc/exampl
 
 From repository root, with Node.js 20+:
 
-\`\`\`sh
+```sh
 npm test
-\`\`\`
+```
 
 The browser's three scripted scenarios are deterministic *models* of asynchronous failure modes. Those are not NEAR chain executions.
 
