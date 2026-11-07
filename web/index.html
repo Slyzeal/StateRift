@@ -90,6 +90,7 @@
               <label>Transaction hash<input name="hash" type="text" required placeholder="Base58 transaction hash" autocomplete="off" spellcheck="false" maxlength="60"></label>
               <label>Signer account<input name="signer" type="text" required placeholder="account.near or account.testnet" autocomplete="off" spellcheck="false" maxlength="64"></label>
               <button class="primary" type="submit">Inspect receipts ↗</button>
+              <button class="secondary" id="tx-sample" type="button">Try verified testnet example</button>
               <button class="secondary" id="tx-export" type="button" disabled>Export evidence</button>
             </form>
             <div id="tx-output" class="tx-output" aria-live="polite"><p class="tx-empty">Enter a transaction hash and the exact signer account. Results come from live read-only NEAR RPC data; they are not simulations or automatic vulnerability findings.</p></div>
