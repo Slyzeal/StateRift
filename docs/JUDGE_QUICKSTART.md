@@ -2,7 +2,7 @@
 
 This project is a prototype. **Real execution evidence and local illustrative models are never presented as interchangeable.**
 
-## 1. Live public receipt inspection (website)
+## 0. Watch a real contract fail, then compare the protected implementation\n\n**[Launch the interactive StateRift case study](https://slyzeal.github.io/StateRift/judge-lab.html)**. This is the fastest way to evaluate the core technology: source-code excerpt → five actual local NEAR Sandbox receipt outcomes (including a failed asynchronous remote method call) → invariant assertion. Switch between the two purpose-built contract variants. The vulnerable example returned a successful outer call but left `completed = 1` after a failed receipt; the protected implementation left `completed = 0` and recorded `failed = 1`. These are from the [successful GitHub Actions run #42385158139](https://github.com/Slyzeal/StateRift/actions/runs/42385158139), artifact `user-contract-runner-examples`, not fabricated browser values. Download the original reports to independently verify the summary. All transaction hashes shown in the artifact are **Sandbox-local**, not live-chain explorer transactions.\n\n## 1. Live public receipt inspection (website)
 
 Open [StateRift](https://slyzeal.github.io/StateRift/#tx-inspector).
 
