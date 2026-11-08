@@ -44,6 +44,7 @@ export function summarizeTransaction(data, network, hash, signer) {
     return {
       index:index+1,
       id:bounded(item?.id,100),
+      spawnedIds:Array.isArray(o.receipt_ids) ? o.receipt_ids.slice(0,150).filter(x=>typeof x==='string').map(x=>bounded(x,100)) : [],
       executor:bounded(o.executor_id || '',100),
       status:executionStatus(o.status),
       gas:numGas(o.gas_burnt).toString(),
@@ -66,6 +67,7 @@ export function summarizeTransaction(data, network, hash, signer) {
     receiptCount:receipts.length,receiptFailures:failures,unresolvedReceipts:pending,
     receiptTruncated:data.receipts_outcome.length>150,
     gasBurnt:gas,actions,receipts,
+    initialReceiptIds:Array.isArray(data.transaction_outcome?.outcome?.receipt_ids) ? data.transaction_outcome.outcome.receipt_ids.slice(0,150).filter(x=>typeof x==='string').map(x=>bounded(x,100)) : [],
     scope:'Observed RPC transaction and receipt outcomes only. This does not establish contract exploitability, fund loss, or an audit finding.',
     explorer:network==='testnet'
       ? 'https://testnet.nearblocks.io/txns/'+encodeURIComponent(hash)
