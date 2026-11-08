@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "type": "pinned-github-actions-sandbox-evidence",
+  "source": {
+    "repository": "Slyzeal/StateRift",
+    "workflowRunId": 42385158139,
+    "workflowUrl": "https://github.com/Slyzeal/StateRift/actions/runs/42385158139",
+    "workflowArtifact": "user-contract-runner-examples",
+    "artifactId": 13578329264,
+    "capturedAt": "2026-11-07T15:12:50.540Z",
+    "contractSourceCommit": "9587bfe4abbcb2f2d0865162e78415cb0a67d660",
+    "origin": "Real NEAR Sandbox local execution in GitHub Actions. NOT mainnet or testnet.",
+    "warning": "This is a pinned public CI snapshot. The independently downloadable workflow artifact is authoritative. This webpage does not run contracts."
+  },
+  "comparison": {
+    "scenario": "Premature settlement on failed asynchronous receipt",
+    "expectedInvariant": "The completed operations count must stay zero after a failed remote receipt.",
+    "protected": {
+      "label": "Protected settlement",
+      "plan": "settlement-protected",
+      "wasmSha256": "be45df07d2be7ca669a7eb90011f0b067b621f3dd1bb3d56d47ef7f68463d20f",
+      "completedAt": "2026-11-07T15:12:38.686Z",
+      "passed": true,
+      "checks": [
+        {
+          "label": "Contract call start()",
+          "expected": "success",
+          "observed": "success",
+          "passed": true
+        },
+        {
+          "label": "get_completed()",
+          "expected": 0,
+          "observed": 0,
+          "passed": true
+        },
+        {
+          "label": "get_failed()",
+          "expected": 1,
+          "observed": 1,
+          "passed": true
+        }
+      ],
+      "receiptCount": 5,
+      "receiptFailures": 1,
+      "gasBurnt": "20733430291871",
+      "transactionHash": "AJuCDs7SYYoK8TSgC9BpHF7yyT3QHBidJ5pwar8jXzad",
+      "receiptOutcomes": [
+        {
+          "executor": "dev-53976-24256.test.near",
+          "status": "success",
+          "gas": "9868904647084"
+        },
+        {
+          "executor": "dev-53976-24256.test.near",
+          "status": "failure",
+          "gas": "888122106152",
+          "error": "MethodNotFound"
+        },
+        {
+          "executor": "tester.test.near",
+          "status": "success",
+          "gas": "223182562500"
+        },
+        {
+          "executor": "dev-53976-24256.test.near",
+          "status": "success",
+          "gas": "9221645127630"
+        },
+        {
+          "executor": "tester.test.near",
+          "status": "success",
+          "gas": "223182562500"
+        }
+      ],
+      "sourceFile": "sandbox/contracts/protected.ts",
+      "highlightedCode": "// No optimistic mutation: a later self-callback decides the result.\nreturn NearPromise.new(near.currentAccountId())\n  .functionCall('method_that_does_not_exist', '{}', 0n, REMOTE_GAS)\n  .then(NearPromise.new(near.currentAccountId())\n    .functionCall('on_complete', '{}', 0n, CALLBACK_GAS))\n  .asReturn();",
+      "analysis": "The remote receipt fails, the private callback records the failure, and the completed count remains zero."
+    },
+    "vulnerable": {
+      "label": "Vulnerable settlement",
+      "plan": "settlement-should-not-complete-on-failure",
+      "wasmSha256": "70b11db72671ce09d473ae50f8a7c2cf33ce3545abff0fade5a70ef91adba298",
+      "completedAt": "2026-11-07T15:12:50.540Z",
+      "passed": false,
+      "checks": [
+        {
+          "label": "Contract call start()",
+          "expected": "success",
+          "observed": "success",
+          "passed": true
+        },
+        {
+          "label": "get_completed()",
+          "expected": 0,
+          "observed": 1,
+          "passed": false
+        }
+      ],
+      "receiptCount": 5,
+      "receiptFailures": 1,
+      "gasBurnt": "20480392988360",
+      "transactionHash": "CkwqqbbQVenv2HJ9GuG5S5x9nQ6qT5zatQVZ8F4vtLyw",
+      "receiptOutcomes": [
+        {
+          "executor": "dev-65841-1632.test.near",
+          "status": "success",
+          "gas": "9759187401516"
+        },
+        {
+          "executor": "dev-65841-1632.test.near",
+          "status": "failure",
+          "gas": "888122106152",
+          "error": "MethodNotFound"
+        },
+        {
+          "executor": "tester.test.near",
+          "status": "success",
+          "gas": "223182562500"
+        },
+        {
+          "executor": "dev-65841-1632.test.near",
+          "status": "success",
+          "gas": "9078325069687"
+        },
+        {
+          "executor": "tester.test.near",
+          "status": "success",
+          "gas": "223182562500"
+        }
+      ],
+      "sourceFile": "sandbox/contracts/vulnerable.ts",
+      "highlightedCode": "// This ledger entry is WRONG: the remote call has not succeeded yet.\nthis.completed += 1;\nreturn NearPromise.new(near.currentAccountId())\n  .functionCall('method_that_does_not_exist', '{}', 0n, REMOTE_GAS)\n  .then(NearPromise.new(near.currentAccountId())\n    .functionCall('on_complete', '{}', 0n, CALLBACK_GAS))\n  .asReturn();",
+      "analysis": "The contract increments completed before the asynchronous call succeeds. The remote receipt fails, but completed remains one, violating the supplied invariant."
+    }
+  }
+}
