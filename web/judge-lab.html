@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a101c">
+  <meta name="description" content="StateRift: step through real NEAR Sandbox execution receipts and see exactly why a deliberately vulnerable contract fails its state invariant.">
+  <title>StateRift · Verified Security Walkthrough</title>
+  <link rel="stylesheet" href="./judge-lab.css">
+</head>
+<body>
+  <a href="#walkthrough" class="skip">Skip to the demonstration</a>
+  <header class="mast">
+    <a class="wordmark" href="./index.html"><span class="logo-mark" aria-hidden="true">S</span><span>StateRift <small>RECEIPT INTELLIGENCE</small></span></a>
+    <nav aria-label="Page links"><a href="./index.html">Workspace</a><a href="https://github.com/Slyzeal/StateRift" target="_blank" rel="noopener noreferrer">Source code ↗</a></nav>
+  </header>
+  <main>
+    <section class="intro" aria-labelledby="heading">
+      <div>
+        <div class="kicker"><span class="live-dot"></span> VERIFIED CASE STUDY · NEAR SANDBOX</div>
+        <h1 id="heading">A transaction can <em>succeed</em> while your contract's state is wrong.</h1>
+        <p>Trace an asynchronous failure through real execution evidence. Compare the code, the failed receipt, and the final state of a vulnerable contract against a protected implementation.</p>
+        <div class="intro-actions"><a class="button button-main" href="#walkthrough">Explore the evidence <span aria-hidden="true">↓</span></a><a class="button button-outline" id="evidence-link" href="https://github.com/Slyzeal/StateRift/actions/runs/42385158139" target="_blank" rel="noopener noreferrer">Verify GitHub CI <span aria-hidden="true">↗</span></a></div>
+      </div>
+      <div class="intro-summary" aria-label="Verified execution summary">
+        <span class="eyebrow">REAL SANDBOX RESULT</span>
+        <div class="headline-stat"><span>1</span><span>failed inner receipt</span></div>
+        <div class="stat-line"><span>Vulnerable completed</span><strong class="text-danger">1 <small>← invariant broken</small></strong></div>
+        <div class="stat-line"><span>Protected completed</span><strong class="text-good">0 <small>← invariant maintained</small></strong></div>
+        <p>Both outer calls returned successfully. The real difference is what the contracts did to persistent state.</p>
+      </div>
+    </section>
+    <section class="context" aria-label="Evidence context">
+      <div><strong>Environment</strong><span>Isolated NEAR Sandbox</span></div>
+      <div><strong>Evidence</strong><span>GitHub Actions artifact</span></div>
+      <div><strong>Mechanism</strong><span>Asynchronous receipt failure</span></div>
+      <div><strong>Security claim</strong><span>Purpose-built examples only</span></div>
+    </section>
+
+    <section class="walkthrough" id="walkthrough" aria-labelledby="demo-heading">
+      <div class="section-top"><div><div class="kicker">01 / INTERACTIVE EVIDENCE</div><h2 id="demo-heading">Follow the failure, not the hype.</h2><p>Every value below comes from a pinned GitHub Actions Sandbox execution artifact. Choose a contract and step through what actually happened.</p></div><div id="verified-source" class="source-note" aria-live="polite">Loading CI evidence…</div></div>
+      <div class="lab-shell">
+        <div class="lab-top">
+          <div class="choice-label">SELECT IMPLEMENTATION</div>
+          <div class="variant-switch" role="group" aria-label="Contract variant">
+            <button id="choose-vulnerable" type="button" aria-pressed="true" class="active">Vulnerable <span class="bad-dot"></span></button>
+            <button id="choose-protected" type="button" aria-pressed="false">Protected <span class="good-dot"></span></button>
+          </div>
+        </div>
+        <div class="stage-track" role="group" aria-label="Demo step">
+          <button type="button" data-stage="0" class="stage active" aria-current="step"><span>01</span><strong>Read the code</strong></button>
+          <button type="button" data-stage="1" class="stage"><span>02</span><strong>Inspect receipts</strong></button>
+          <button type="button" data-stage="2" class="stage"><span>03</span><strong>Check final state</strong></button>
+        </div>
+        <div class="stage-body">
+          <div class="stage-head">
+            <div><div id="stage-number" class="eyebrow">STEP 01 / 03</div><h3 id="stage-title">The state mutation</h3><p id="stage-description">See the exact source-code fragment that decides how the contract accounts for a failed remote call.</p></div>
+            <span id="stage-label" class="outcome-badge">VULNERABLE CONTRACT</span>
+          </div>
+          <div class="stage-panel" id="stage-panel">
+            <div class="panel-heading"><span id="panel-heading">Source code</span><a id="source-code-link" href="https://github.com/Slyzeal/StateRift" target="_blank" rel="noopener noreferrer">Open full source ↗</a></div>
+            <pre id="code-content" class="code-panel" aria-label="Actual contract source excerpt">Loading real code excerpt…</pre>
+            <ol id="receipt-list" class="receipt-list" aria-label="Actual Sandbox receipt outcomes" hidden></ol>
+            <div id="assertion-panel" class="assertions" hidden></div>
+          </div>
+          <div class="insight"><span class="insight-icon" aria-hidden="true">i</span><div><strong id="insight-heading">What matters</strong><p id="insight-text">The state is updated before remote execution is confirmed.</p></div></div>
+          <div class="stage-controls"><button type="button" id="prev-step" class="button button-subtle" disabled>← Previous</button><span id="step-counter" aria-live="polite">1 of 3</span><button type="button" id="next-step" class="button button-main">Next: inspect receipts →</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="proof" id="proof" aria-labelledby="proof-heading">
+      <div class="kicker">02 / INDEPENDENT REPRODUCTION</div>
+      <h2 id="proof-heading">Don't trust a screenshot. Reproduce the result.</h2>
+      <p>Judge access requires no wallet and no paid service. Download the existing workflow artifact, or rerun the supplied plans in a fresh local NEAR Sandbox.</p>
+      <div class="proof-grid">
+        <article><div class="proof-n">01</div><h3>View the actual CI artifact</h3><p>The pinned workflow uploaded a <code>protected.json</code> and <code>vulnerable.json</code> test report. Compare those files with this presentation.</p><a id="artifact-link" href="https://github.com/Slyzeal/StateRift/actions/runs/42385158139" target="_blank" rel="noopener noreferrer">Open source workflow ↗</a></article>
+        <article><div class="proof-n">02</div><h3>Repeat the experiment</h3><p>Build the two contracts and execute each plan with near-workspaces. The first must pass; the vulnerable plan must report an invariant failure.</p><a href="https://github.com/Slyzeal/StateRift/blob/main/docs/CONTRACT_TESTING.md" target="_blank" rel="noopener noreferrer">Reproduction guide ↗</a></article>
+        <article><div class="proof-n">03</div><h3>Use your own compiled contract</h3><p>The workspace inspects real WASM locally and exports a plan. Actual execution of custom WASM still requires the isolated Sandbox CLI.</p><a href="./index.html#contract-inspector">Go to contract workspace →</a></article>
+      </div>
+      <div class="command-block"><div><span>RUN TESTS LOCALLY · FROM REPO ROOT</span><button type="button" id="copy-command" title="Copy test commands">Copy commands</button></div><pre id="command-text">cd sandbox
+npm install --no-audit --no-fund
+npm run build
+node scripts/scan-contract.mjs --wasm build/protected.wasm --plan plans/settlement-protected.json --output protected.json
+node scripts/scan-contract.mjs --wasm build/vulnerable.wasm --plan plans/settlement-vulnerable.json --output vulnerable.json</pre><p>The vulnerable command intentionally exits with code 1 because its state assertion fails; this is the expected finding in the example.</p></div>
+    </section>
+    <section class="disclosure">
+      <strong>Scope of evidence</strong>
+      <p>The reports originate from local NEAR Sandbox contract execution inside GitHub Actions, not NEAR mainnet or NEAR testnet. The hashes in these reports identify sandbox-local transactions, not publicly searchable network transactions. StateRift does not automatically detect unknown vulnerabilities in arbitrary contracts. This is an educational, reproducible failure-analysis case study, not a completed security audit.</p>
+    </section>
+  </main>
+  <footer><span>StateRift · Break the logic. Protect the chain.</span><span><a href="./index.html">Product workspace</a> · <a href="https://github.com/Slyzeal/StateRift" target="_blank" rel="noopener noreferrer">Open source ↗</a></span></footer>
+  <script type="module" src="./judge-lab.js"></script>
+</body>
+</html>
