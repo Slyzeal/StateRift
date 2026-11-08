@@ -6,6 +6,9 @@ on:
       - 'sandbox/plans/**'
       - '.github/workflows/contract-runner.yml'
       - 'web/wasm-inspector.js'
+      - 'web/data/judge-runner-evidence.json'
+      - 'web/judge-evidence.js'
+      - 'scripts/check-judge-evidence.js'
   push:
     branches: [main]
     paths:
@@ -13,6 +16,9 @@ on:
       - 'sandbox/plans/**'
       - '.github/workflows/contract-runner.yml'
       - 'web/wasm-inspector.js'
+      - 'web/data/judge-runner-evidence.json'
+      - 'web/judge-evidence.js'
+      - 'scripts/check-judge-evidence.js'
   workflow_dispatch:
 permissions:
   contents: read
@@ -74,6 +80,8 @@ jobs:
           fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,summary+'\n');
           console.log('Verified genuine receipt-level failure evidence in both reports');
           NODE
+      - name: Cross-check judge case study against fresh Sandbox reports
+        run: node ../scripts/check-judge-evidence.js
       - uses: actions/upload-artifact@v4
         with:
           name: user-contract-runner-examples
