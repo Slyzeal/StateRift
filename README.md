@@ -10,7 +10,7 @@ StateRift helps developers reason about accounting and state invariants when asy
 
 **Judge quick start:** [run StateRift in 5 minutes](docs/JUDGE_QUICKSTART.md) · [live website](https://slyzeal.github.io/StateRift/) · [verified Sandbox workflow](https://github.com/Slyzeal/StateRift/actions/workflows/contract-runner.yml).
 
-## What is implemented
+**Start here for judges:** [Interactive verified execution case study](https://slyzeal.github.io/StateRift/judge-lab.html) — a guided code → real Sandbox receipts → final state comparison, sourced from [GitHub Actions run 42385158139](https://github.com/Slyzeal/StateRift/actions/runs/42385158139). No wallet required. The code example has an intentionally broken contract and a protected version; this is not an arbitrary-code vulnerability scan.\n\n## What is implemented
 
 - A dependency-free static browser workspace under `web/`. WASM inspection, plan preparation, and report review stay local; live NEAR transaction lookups use read-only RPC on demand.
 - Three deterministic, repeatable **modeled** fault scenarios: premature settlement, missing compensation after a failed transfer, and repeated processing of a successful request.
