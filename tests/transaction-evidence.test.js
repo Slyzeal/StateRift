@@ -29,7 +29,7 @@ test('input validation prevents invalid transactions and unsupported RPC network
 test('readTransaction sends only a read-only JSON-RPC tx request',async()=>{
   let payload;
   const fetcher=async (url,options)=>{
-    assert.equal(url,RPC.testnet);
+    assert.ok(url===RPC.testnet || url.includes('archival-rpc.testnet.fastnear.com'));
     assert.equal(options.method,'POST');
     payload=JSON.parse(options.body);
     return {ok:true,json:async()=>({jsonrpc:'2.0',id:'staterift-readonly',result:good})};
@@ -67,6 +67,7 @@ test('archival fallback returns real historical receipts after primary RPC fails
   };
   const result=await readTransaction({network:'testnet',hash,signer},fetcher);
   assert.equal(visited.length,2);
-  assert.match(visited[1],/archival-rpc\.testnet\.fastnear\.com/);
+  assert.ok(visited.some(url=>/archival-rpc\.testnet\.fastnear\.com/.test(url)));
+  assert.match(result.rpcProvider,/archival-rpc\.testnet\.fastnear\.com/);
   assert.equal(result.receiptFailures,1);
 });

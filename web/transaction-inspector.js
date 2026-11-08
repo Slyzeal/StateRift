@@ -60,6 +60,15 @@ if(form && output && submit && exportButton) {
     } catch(error) {
       output.replaceChildren();
       append(output,'p',error.name==='AbortError'?'RPC request timed out. Try again.':error.message || 'Unable to load transaction.','tx-error-message');
+      const explorerBase=values.network==='testnet' ? 'https://testnet.nearblocks.io/txns/' : 'https://nearblocks.io/txns/';
+      const link=document.createElement('a');
+      link.href=explorerBase+encodeURIComponent(values.hash);
+      link.target='_blank';
+      link.rel='noopener noreferrer';
+      link.className='tx-explorer-fallback';
+      link.textContent='Open this transaction in NearBlocks ↗';
+      output.append(link);
+      append(output,'p','External explorer link · No result was verified by StateRift.','tx-notice');
     } finally {clearTimeout(timeout);submit.disabled=false;}
   });
   exportButton.addEventListener('click',()=>{

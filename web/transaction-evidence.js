@@ -74,21 +74,64 @@ export function summarizeTransaction(data, network, hash, signer) {
       : 'https://nearblocks.io/txns/'+encodeURIComponent(hash),
   };
 }
+/**
+ * Query independently timed endpoints in parallel. A stalled provider must not
+ * consume the entire budget before an archival provider can return historical
+ * receipts. Every attempt is read-only and independently abortable.
+ */
 export async function readTransaction({network,hash,signer},fetcher=fetch,{signal}={}) {
   checkInput({network,hash,signer});
-  const body=JSON.stringify({jsonrpc:'2.0',id:'staterift-readonly',method:'tx',params:{tx_hash:hash,sender_account_id:signer,wait_until:'FINAL'}});
-  let lastError;
-  for(const url of [RPC[network],ARCHIVAL_RPC[network]]) {
+  if(signal?.aborted) throw signal.reason || new DOMException('Request aborted','AbortError');
+  const body=JSON.stringify({
+    jsonrpc:'2.0',id:'staterift-readonly',method:'tx',
+    params:{tx_hash:hash,sender_account_id:signer,wait_until:'FINAL'},
+  });
+  // Historical transactions are often pruned from non-archival RPC. The
+  // archival provider is first for testnet examples, but both start together.
+  const providers=network==='testnet'
+    ? [ARCHIVAL_RPC[network],RPC[network]]
+    : [RPC[network],ARCHIVAL_RPC[network]];
+  const controllers=providers.map(()=>new AbortController());
+  const abortAll=()=>controllers.forEach(controller=>controller.abort());
+  signal?.addEventListener('abort',abortAll,{once:true});
+  try {
+    const requests=providers.map(async(url,index)=>{
+      const controller=controllers[index];
+      const timer=setTimeout(()=>controller.abort(),8000);
+      try {
+        const response=await fetcher(url,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body,
+          signal:controller.signal,
+        });
+        if(!response.ok) throw new Error('RPC HTTP '+response.status);
+        const json=await response.json();
+        if(json.error) throw new Error(bounded(json.error?.cause?.name || json.error?.message || 'RPC rejected request.',110));
+        const result=summarizeTransaction(json.result,network,hash,signer);
+        return {...result,rpcProvider:url};
+      } finally {
+        clearTimeout(timer);
+      }
+    });
     try {
-      const response=await fetcher(url,{method:'POST',headers:{'Content-Type':'application/json'},body,signal});
-      if(!response.ok) throw new Error('RPC HTTP '+response.status);
-      const json=await response.json();
-      if(json.error) throw new Error(bounded(json.error?.cause?.name || json.error?.message || 'RPC rejected the request.',110));
-      return summarizeTransaction(json.result,network,hash,signer);
+      const result=await Promise.any(requests);
+      abortAll(); // Cancel slower endpoints once a valid result is available.
+      return result;
     } catch(error) {
-      if(signal?.aborted) throw error;
-      lastError=error;
+      if(signal?.aborted) throw signal.reason || new DOMException('Request aborted','AbortError');
+      const reasons=error instanceof AggregateError ? error.errors : [error];
+      const details=reasons.map(e=>String(e?.message||e)).filter(Boolean);
+      throw new Error(
+        'Unable to retrieve this transaction from NEAR RPC providers. '+
+        (details.some(e=>/abort/i.test(e))?'One or more requests timed out. ':'')+
+        (details.length ? 'Provider response: '+details.slice(0,2).map(e=>bounded(e,100)).join('; ')+'. ' : '')+
+        'Check the network, hash, signer or provider availability. '+
+        'You can still inspect the transaction in NearBlocks.'
+      );
     }
+  } finally {
+    abortAll();
+    signal?.removeEventListener('abort',abortAll);
   }
-  throw new Error((lastError?.message || 'RPC unavailable')+'. Check the transaction hash, signer, network, or RPC provider access.');
 }
