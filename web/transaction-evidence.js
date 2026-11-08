@@ -125,6 +125,7 @@ export async function readTransaction({network,hash,signer},fetcher=fetch,{signa
       throw new Error(
         'Unable to retrieve this transaction from NEAR RPC providers. '+
         (details.some(e=>/abort/i.test(e))?'One or more requests timed out. ':'')+
+        (details.length ? 'Provider response: '+details.slice(0,2).map(e=>bounded(e,100)).join('; ')+'. ' : '')+
         'Check the network, hash, signer or provider availability. '+
         'You can still inspect the transaction in NearBlocks.'
       );
