@@ -92,3 +92,9 @@ This is not one-click public execution. GitHub Pages does not run untrusted cont
 The website also provides a **read-only NEAR transaction receipt explorer** for mainnet and testnet. Supply the transaction hash and its signer account, or press **Try verified testnet example** to inspect a known historical NEAR transaction with a live RPC request. FastNear archival RPC is a fallback for transactions absent from regular RPC state. It shows overall status, failed receipts, observed logs, receipt gas, NearBlocks links, and exports the observed result as JSON.
 
 An RPC response can be unavailable depending on CORS, provider limits, or connectivity; failures are surfaced transparently. This feature is **not a vulnerability scanner**, and a failed receipt alone is not proof of exploitation.
+
+## Interactive receipt lineage debugger
+
+The live transaction explorer now includes a **receipt lineage debugger**. For an actual NEAR mainnet or testnet transaction, StateRift reads the receipt IDs created by the transaction and each subsequent receipt from the read-only RPC response, then shows expandable receipt details, failure-path filtering, execution gas, returned logs, and failure errors. The explorer also displays the important distinction between a successful outer transaction and an internally failed asynchronous receipt.
+
+This graph represents **reported receipt creation relationships, not a chronological or causal security proof**. If the RPC does not expose a relationship, the browser explicitly marks its source as unlinked instead of guessing from array order. The public site does not deploy or execute submitted contracts; user-defined tests still use the documented NEAR Sandbox CLI.

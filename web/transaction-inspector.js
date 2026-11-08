@@ -1,3 +1,4 @@
+import { renderReceiptDebugger } from './receipt-debugger.js';
 import {readTransaction, VERIFIED_SAMPLE} from './transaction-evidence.js';
 const form=document.getElementById('tx-form');
 const output=document.getElementById('tx-output');
@@ -53,18 +54,7 @@ if(form && output && submit && exportButton) {
         append(block,'span',name);
         append(block,'strong',value);
       }
-      append(output,'h3','Execution receipts','tx-heading');
-      const ol=append(output,'ol','','tx-receipts');
-      for(const receipt of result.receipts) {
-        const li=append(ol,'li','','tx-receipt');
-        append(li,'span','Receipt '+receipt.index,'tx-index');
-        append(li,'strong',receipt.status.toUpperCase(),'tx-status '+receipt.status);
-        append(li,'span',receipt.executor || 'Unknown executor','tx-sub');
-        const more=append(li,'div','Gas '+receipt.gas+' · '+receipt.id,'tx-detail');
-        more.title='Receipt ID and execution gas';
-        if(receipt.error) append(li,'pre',receipt.error,'tx-error');
-        for(const log of receipt.logs) append(li,'pre',log,'tx-log');
-      }
+      renderReceiptDebugger(result, output);
       if(result.receiptTruncated) append(output,'p','Only the first 150 receipts are shown. Exported report is also limited to those receipts.','tx-notice');
       append(output,'p',result.scope,'tx-notice');
     } catch(error) {
