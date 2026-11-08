@@ -70,6 +70,15 @@
           <div class="metric"><span class="metric-caption">EXECUTION MODE</span><div class="metric-number metric-mode"><span class="metric-dot"></span>Local <small>no wallet needed</small></div></div>
         </section>
 
+        <section class="judge-feature" aria-labelledby="judge-feature-title">
+          <div class="judge-feature-top"><span class="judge-feature-badge">REAL NEAR SANDBOX · VERIFIED CI CASE STUDY</span><span class="judge-feature-indicator" aria-hidden="true">● LIVE WALKTHROUGH</span></div>
+          <div class="judge-feature-content">
+            <div><h2 id="judge-feature-title">See an actual contract bug, explained.</h2><p>Follow a vulnerable NEAR smart contract from source code to a failed async receipt and the wrong final state. Then compare it against a protected implementation using evidence from a real GitHub Actions Sandbox run.</p><div class="judge-feature-actions"><a class="judge-feature-primary" href="./judge-lab.html">Explore the verified case study <span aria-hidden="true">↗</span></a><a class="judge-feature-secondary" href="https://github.com/Slyzeal/StateRift/actions/runs/42385158139" target="_blank" rel="noopener noreferrer">Verify original CI run ↗</a></div></div>
+            <div class="judge-feature-compare" aria-label="Observed failed receipt and final-state contrast"><span>AFTER THE REMOTE RECEIPT FAILS</span><div><small>VULNERABLE</small><strong class="judge-feature-bad">completed = 1</strong><em>INVARIANT VIOLATED</em></div><div><small>PROTECTED</small><strong class="judge-feature-good">completed = 0</strong><em>INVARIANT MAINTAINED</em></div></div>
+          </div>
+          <p class="judge-feature-scope">These are purpose-built contracts executed on a local NEAR Sandbox, not mainnet transactions or a claim of automatic scanning.</p>
+        </section>
+
         <section id="contract-inspector" class="inspection-section" aria-labelledby="inspection-heading">
           <div class="section-head"><div><p class="eyebrow">01 / YOUR CONTRACT</p><h2 id="inspection-heading">Inspect a real NEAR contract</h2><p class="section-description">Select a compiled .wasm file to inspect its actual host calls and public methods. Processing stays in your browser.</p></div><span class="inspection-label">LOCAL • NO KEY REQUIRED</span></div>
           <div class="inspection-card">
