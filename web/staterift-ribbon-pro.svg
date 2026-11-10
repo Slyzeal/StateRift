@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 346 400" role="img" aria-labelledby="srmarktitle">
+<title id="srmarktitle">StateRift dimensional ribbon emblem</title>
+<defs>
+<linearGradient id="top" x1=".06" x2=".94" y1=".02" y2=".84"><stop stop-color="#f8f7ff"/><stop offset=".28" stop-color="#d3d2eb"/><stop offset=".68" stop-color="#979ebd"/><stop offset="1" stop-color="#4b527a"/></linearGradient>
+<linearGradient id="fold" x1=".1" x2=".9" y1=".05" y2=".95"><stop stop-color="#5a5d8a"/><stop offset=".48" stop-color="#252749"/><stop offset=".82" stop-color="#343965"/><stop offset="1" stop-color="#9694c5"/></linearGradient>
+<linearGradient id="low" x1=".03" x2=".87" y1=".22" y2=".96"><stop stop-color="#555a86"/><stop offset=".28" stop-color="#9e9ece"/><stop offset=".62" stop-color="#c0b9ea"/><stop offset="1" stop-color="#f4f1ff"/></linearGradient>
+<linearGradient id="shade" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#232943"/><stop offset="1" stop-color="#6e6a9d"/></linearGradient>
+<filter id="softshadow" x="-18%" y="-18%" width="136%" height="142%"><feDropShadow dx="0" dy="9" stdDeviation="9" flood-color="#050717" flood-opacity=".28"/></filter>
+</defs>
+<g filter="url(#softshadow)">
+<path d="M10 105Q10 90 24 82L159 7Q173 -1 188 7L325 82Q337 88 337 104V161Q337 173 325 167L187 96Q173 89 160 97L10 183Z" fill="url(#top)" stroke="#d8d7ef" stroke-width="1.6"/>
+<path d="M10 181Q8 197 22 205L162 286Q172 293 185 287L321 216Q336 208 336 193V160Q336 171 326 174L182 251L24 164Z" fill="url(#fold)" stroke="#525578" stroke-width="1.5"/>
+<path d="M22 280L159 207Q172 200 185 207L324 278Q337 285 337 302V307Q337 324 322 332L189 392Q173 400 158 392L22 329Q10 323 10 307V297Q10 286 22 280Z" fill="url(#low)" stroke="#d9d4f2" stroke-width="1.8"/>
+<path d="M10 296L159 214Q173 207 187 214L331 289Q337 292 337 303L337 318Q337 327 323 334L188 395Q175 401 159 394L22 329Q10 323 10 309Z" fill="url(#shade)" opacity=".32"/>
+<path d="M11 309Q11 321 25 328L159 390Q174 397 187 391L321 333Q338 325 337 308L337 327Q337 341 321 347L189 398Q174 404 157 397L24 338Q10 332 10 320Z" fill="url(#low)" opacity=".95"/>
+<path d="M24 212L162 289L188 288L318 221L316 255L185 330Q174 337 160 328L23 255Z" fill="url(#fold)" opacity=".75"/>
+<path d="M10 181L159 97Q173 89 188 97L326 167" stroke="#f8f7ff" stroke-opacity=".58" fill="none" stroke-width="2.3"/>
+</g>
+<g fill="none" stroke="#f8f8ff" stroke-linejoin="round" stroke-linecap="round" stroke-width="15">
+<path d="M146 205V151L204 211V151"/>
+<path d="M147 210L204 151"/>
+</g>
+</svg>
