@@ -4,7 +4,7 @@ import {VERIFIED_SAMPLE, RPC, ARCHIVAL_RPC} from '../web/transaction-evidence.js
 
 const origin='https://slyzeal.github.io';
 const endpoints=[ARCHIVAL_RPC.testnet,RPC.testnet];
-const accepts=(raw,needle)=>raw?.split(',').map(s=>s.trim().toLowerCase()).includes(needle.toLowerCase());
+const accepts=(raw,needle)=>raw?.split(',').map(s=>s.trim().toLowerCase()).some(s=>s==='*'||s===needle.toLowerCase());
 const allowsOrigin=(headers)=>{
   const value=headers.get('access-control-allow-origin');
   return value==='*'||value===origin;
