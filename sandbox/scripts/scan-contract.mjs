@@ -6,6 +6,7 @@ import { createHash } from 'node:crypto';
 import { isDeepStrictEqual } from 'node:util';
 import { Worker } from 'near-workspaces';
 import { validatePlan } from './plan.mjs';
+import { evaluateCallOutcome } from './call-verdict.mjs';
 
 function argsFrom(argv) {
   const opts = {};
@@ -49,19 +50,16 @@ export async function runContractPlan({ wasmPath, planPath, outputPath }) {
     const contract = await root.devDeploy(wasmPath);
     for (const step of plan.steps) {
       if (step.type === 'call') {
-        let succeeded = false, error = null, execution = null;
+        let error = null, execution = null;
         try {
           // callRaw captures *individual async receipt outcomes*. A successful
           // final callback can still conceal a failed remote receipt.
           execution = await caller.callRaw(contract, step.method, step.args, { gas: step.gas });
-          succeeded = !execution.failed;
         } catch (e) {
           error = String(e?.message ?? e).slice(0, 2000);
         }
-        const outcomes = Array.isArray(execution?.receipts_outcomes) ? execution.receipts_outcomes : [];
-        const receiptFailures = outcomes.filter((r) => r?.outcome?.status && Object.hasOwn(r.outcome.status, 'Failure')).length;
-        const receiptMatch = step.expectReceiptFailure === undefined || (outcomes.length > 0 && (receiptFailures > 0) === step.expectReceiptFailure);
-        const passed = succeeded === (step.expect === 'success') && receiptMatch;
+        const verdict = evaluateCallOutcome(step, execution, error);
+        const { outcomes, receiptFailures, passed, observed } = verdict;
         const receipts = outcomes.slice(0, 24).map((r) => {
           const status = r?.outcome?.status ?? {};
           return {
@@ -78,7 +76,7 @@ export async function runContractPlan({ wasmPath, planPath, outputPath }) {
         });
         report.steps.push({
           type: 'call', method: step.method, expect: step.expect,
-          observed: succeeded ? 'success' : 'failure', passed,
+          observed, passed,
           receiptCount: outcomes.length, receiptFailures, receiptTruncated: outcomes.length > 24,
           ...(step.expectReceiptFailure === undefined ? {} : { expectReceiptFailure: step.expectReceiptFailure }),
           ...(execution?.result?.transaction?.hash ? { transactionHash: String(execution.result.transaction.hash) } : {}),
