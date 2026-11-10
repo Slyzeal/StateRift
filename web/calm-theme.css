@@ -1,0 +1,149 @@
+/* StateRift: consistent restrained interface across all existing workspace tools.
+   Cosmetic CSS only; the original IDs, scripts, and workflows remain unchanged. */
+:root{
+  color-scheme:dark;
+  --canvas:#11151e;--surface:#1c2230;--surface-muted:#222938;
+  --text:#eff0f5;--muted:#b0b6c6;--subtle:#909bad;
+  --border:#343d50;--border-strong:#50586e;
+  --accent:#c1b8e4;--accent-soft:#303048;--sidebar:#111722;
+  --good:#9ed8bd;--good-bg:#1d3d35;--bad:#e4a9aa;--bad-bg:#432d36;
+  --shadow:0 16px 38px rgba(0,0,0,.1);
+}
+html{scroll-behavior:smooth}
+body{background:linear-gradient(140deg,#10141c 0%,#191d29 52%,#11151d 100%);color:var(--text)}
+::selection{background:#b9b0e0;color:#15151d}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline-color:#cec4f2!important}
+.shell{background:transparent}
+.sidebar{background:#131822;border-color:#ffffff1a}
+.brand{border-color:#ffffff18;gap:13px}
+.brand-icon{width:43px;height:43px;padding:3px;background:transparent;border:0}
+.brand-icon img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 10px #0007)}
+.brand-text{color:#f6f5fa;letter-spacing:-.5px}
+.brand-text small{color:#a7a9b9;letter-spacing:1.8px}
+.sidebar-scroll{padding-top:24px}
+.nav-label{color:#81899c}
+.side-link{color:#b0b6c4;transition:background-color .25s ease,transform .25s ease,color .25s ease}
+.side-link:hover{background:#ffffff0d;transform:translateX(2px)}
+.side-link.current{background:#35364b;color:#f8f8fc;box-shadow:inset 3px 0 #bbb3dd}
+.sidebar-footer{border-color:#ffffff18}
+.topbar{background:#171d29;border-color:#333a4d}
+.breadcrumbs,.environment,.topbar-link{color:#bdc1cd}
+.breadcrumb-root{color:#8d96aa}.breadcrumb-divider{color:#606779}
+.content{padding-top:40px}
+h1,h2,.metric-number,.panel-caption,.result-header h3,.evidence-card h3{color:#f1f1f6}
+.page-heading h1{font-size:clamp(29px,3vw,38px);font-weight:720;letter-spacing:-1.3px}
+.page-description,.section-description,.scenario-main small,.result-header .muted,.evidence-card p{color:#adb3c3}
+.eyebrow,.metric-caption,.section-head .eyebrow{color:#a69dbf}
+.primary{color:#151721;background:#eeeaf7;border-color:#eeeaf7;box-shadow:0 3px 12px #0003}
+.primary:hover:not(:disabled){background:#d7d0e9;border-color:#d7d0e9;box-shadow:0 7px 21px #0004}
+.secondary{background:#292f40;color:#e5e5ee;border-color:#5b6378}
+.secondary:hover:not(:disabled){background:#363a4c;border-color:#9898ae}
+.primary,.secondary{border-radius:9px;transition:background .25s,border-color .25s,transform .25s,box-shadow .25s}
+.primary:hover:not(:disabled),.secondary:hover:not(:disabled){transform:translateY(-1px)}
+.metrics,.scenario-panel,.results-panel,.evidence-frame,.inspection-card,.tx-card,.plan-card,.report-card,.plan-row,.report-step,.flow-details{background:#1b2230;border-color:#353e51;box-shadow:0 8px 28px #00000014}
+.metrics{border-radius:13px}
+.metric{border-color:#333c4d}
+.metric-number small,.metric-caption{color:#abb0c1}
+.section-head h2{font-weight:710}
+.scenario-panel,.results-panel,.inspection-card,.tx-card,.plan-card,.report-card,.evidence-frame{border-radius:13px}
+.panel-caption,.result-header h3,.result-pill,.plan-row-heading strong,.report-name{color:#ecebf3}
+.panel-caption-count,.scenario-number,.result-pill{background:#2a3041;color:#bdc0d0}
+.scenario{color:#e6e6ee;transition:background .25s,border-color .25s}
+.scenario:hover{background:#272e3f}
+.scenario.active{background:#31334a;border-color:#66647e}
+.scenario.active .scenario-number{background:#5c5978;color:#fff}
+.severity.high{background:#4c303b;color:#f0b5b5}
+.severity.medium{background:#493b2b;color:#eed3a7}
+.panel-foot,.panel-foot strong{color:#adb1c1}
+.result-header .eyebrow,.result-header .muted{color:#aab1c1}
+.mode-buttons{background:#121925}
+.mode-buttons button{color:#adb3c4}
+.mode-buttons button.selected{background:#3a3c53;color:#f8f8fc;box-shadow:none}
+.invariant,.state-grid,.impact,.empty-state{background:#202839;border-color:#40475c}
+.invariant span,.invariant p,.state-grid strong,.impact,.empty-state strong{color:#e0e1ec}
+.state-grid>div{border-color:#43495c}
+.state-grid span,.empty-state{color:#adb4c3}
+.timeline-title,.timeline li strong{color:#e4e5ee}
+.timeline li span,.timeline-title span{color:#abb1c1}
+.timeline li{border-left-color:#444d61}
+.timeline li::before{background:#293149;border-color:#aba4c9}
+.evidence-meta,.evidence-disclaimer,.disclosure{background:#1f2736;color:#adb5c5;border-color:#353e50}
+.evidence-tag,.evidence-check{background:#1d3e34;color:#a0dcc2}
+.evidence-meta a,.text-link,.evidence-compare code,.evidence-disclaimer strong,.disclosure strong,footer a{color:#c0b4e2}
+.evidence-compare span{color:#b0b5c5}
+.evidence-compare code{background:#232b3a;border-color:#414a5f;color:#d7d8e2}
+.judge-feature{background:linear-gradient(130deg,#222533,#1a2232);border-color:#504c63;box-shadow:0 17px 38px #00000024}
+.judge-feature-top,.judge-feature-scope{border-color:#515369}
+.judge-feature-badge,.judge-feature-compare>span{color:#c2badd}
+.judge-feature-indicator{color:#a9d5c0}
+.judge-feature-compare>div{background:#151c29;border-color:#3f465b}
+.judge-feature-compare small,.judge-feature-compare em,.judge-feature-content p,.judge-feature-scope{color:#b9bccc}
+.judge-feature-primary{background:#ece8f5;color:#1b1d2b}
+.judge-feature-primary:hover{background:#d8cee9}
+.judge-feature-secondary{border-color:#73718b;color:#e3e2ed}
+.judge-feature-secondary:hover{background:#343749}
+.judge-feature-bad{color:#eab0ac}.judge-feature-good{color:#9ed7bc}
+.task-guide-title{color:#a6a7bb}
+.task-guide>a{background:#1e2534;border-color:#434b60;transition:background .25s,transform .25s,border-color .25s}
+.task-guide>a:hover{background:#282c3f;border-color:#88809f;transform:translateY(-2px);box-shadow:0 12px 25px #0002}
+.task-guide strong{color:#eeeeF5}.task-guide small{color:#afb5c6}
+/* WASM inspector */
+.upload-label,.inspection-head,.inspection-facts b,.inspection-next strong{color:#e8e8f0}
+.upload-label span,.inspection-output,.inspection-facts,.inspection-hash,.inspection-subtitle{color:#b3b7c6}
+#contract-file{color:#d8d9e4}
+.inspection-tags code{background:#2b3142;color:#d1d3e1;border-color:#454a60}
+.inspection-hash code{color:#dddde9}
+.inspection-good{background:#204438;color:#a4dfc4}
+.inspection-caveat{background:#403628;color:#efd7ac}
+.inspection-next,.tx-footer,.plan-source,.plan-disclosure{background:#202839;border-color:#3b465a;color:#afb5c4}
+.inspection-next a,.plan-disclosure a{color:#c6bae8}
+.inspection-label{background:#263d37;border-color:#43665a;color:#b6dfc9}
+/* transaction receipt browser */
+.tx-form label,.tx-meta-item span,.tx-sub,.tx-detail,.tx-notice,.tx-footer,.tx-empty,.tx-loading{color:#afb6c6}
+.tx-form input,.tx-form select,.plan-top input,.plan-input input,.plan-input select{background:#121a27;color:#f1f0f7;border:1px solid #505b70;box-shadow:none}
+.tx-form input::placeholder,.plan-input input::placeholder{color:#909bb0}
+.tx-output{border-color:#394456}
+.tx-summary a,.flow-branch{color:#c1b5e7}
+.tx-status{background:#34384d;color:#e4e0f0}
+.tx-status.success{background:#204337;color:#a3e1c1}
+.tx-status.failed{background:#4d3038;color:#f1b3b2}
+.tx-meta{background:#3b4357;border-color:#3b4357}
+.tx-meta-item,.tx-receipt{background:#202839;border-color:#3a4356}
+.tx-meta-item strong,.tx-index{color:#eeedf5}
+.tx-log,.flow-body pre{background:#161e2a;color:#e5e4ee}
+.tx-error{background:#412e36;color:#f0afad}
+.tx-error-message,.report-error{color:#e8a8a8}
+/* test plans and report reviewer */
+.plan-top,.plan-source,.plan-disclosure{border-color:#3c4559}
+.plan-top label,.plan-row-heading strong,.report-card>label,.report-label{color:#e9e8f1}
+.plan-input,.plan-source,.plan-disclosure,.report-explain{color:#b6b9c9}
+.plan-row{background:#222a3a;border-color:#465067}
+.plan-remove,.flow-filter[aria-pressed="true"]{background:#48313a;color:#f0b4b4}
+.plan-remove:hover{background:#603b47}
+.plan-status,.report-guide{background:#262b40;border-color:#505471;color:#cac9db}
+.plan-status.plan-error{background:#482e36;border-color:#a96a72;color:#f2baba}
+.report-guide strong,.report-guide a,.report-guide code{color:#e2dafa}
+.report-guide code{background:#38394f}
+.report-results{background:#202839;border-color:#454d61;color:#d6d9e4}
+.report-step{background:#232b3a;border-color:#485166}
+.report-detail,.report-receipt,.report-hash{color:#b5bbc9}
+.report-pass{background:#234237;color:#a4dfc3!important}
+.report-fail{background:#493039;color:#efb2b3!important}
+.flow-help,.flow-provenance,.flow-executor,.flow-origin,.flow-facts,.flow-subheading{color:#b2b7c7}
+.flow-details{background:#202839}
+.flow-summary:hover{background:#2b3444}
+.flow-identity strong{color:#ebebf1}
+.flow-jump{background:#3b3c56;color:#eee5fd}
+.flow-diagnosis{background:#282e41;color:#d9dae8}
+.flow-diagnosis.flow-warning{background:#41372b;color:#edd2a7}
+.flow-diagnosis.flow-neutral{background:#203c33;color:#b2dfc8}
+.flow-body{border-color:#434b5e}
+footer,.disclosure p{color:#abb1c1}
+/* Precise, restrained motion — never alters form state or data rendering. */
+@keyframes calm-rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.page-heading{animation:calm-rise .6s ease-out both}
+.metrics{animation:calm-rise .7s .08s ease-out both}
+.task-guide{animation:calm-rise .7s .14s ease-out both}
+.brand-icon img{transition:transform .35s ease}
+.brand:hover .brand-icon img{transform:translateY(-2px)}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}.page-heading,.metrics,.task-guide{animation:none!important}*,*::before,*::after{transition-duration:0s!important;animation-duration:0s!important;animation-iteration-count:1!important}}
