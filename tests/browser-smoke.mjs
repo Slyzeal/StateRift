@@ -67,11 +67,11 @@ try{
    name:'plan.json',mimeType:'application/json',
    buffer:Buffer.from(JSON.stringify({schemaVersion:1,name:'test',steps:[{type:'call',method:'start'}]}))
   });
-  assert.match(await page.locator('#report-results').innerText(),/TEST PLAN, not an execution report/);
+  await page.getByText(/You selected a TEST PLAN, not an execution report/).waitFor();
   await page.locator('#report-file').setInputFiles({
    name:'report.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(report))
   });
-  assert.match(await page.locator('#report-results').innerText(),/ALL ASSERTIONS PASSED/);
+  await page.locator('#report-results').getByText('ALL ASSERTIONS PASSED').waitFor();
   assert.match(await page.locator('#report-results').innerText(),/NOT INDEPENDENTLY VERIFIED/);
   
   // Exercise the real receipt UI with an isolated, deterministic RPC mock.
