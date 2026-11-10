@@ -433,3 +433,10 @@ footer a { color: #5b6e91; }
 .judge-feature-scope{margin:0;padding:13px 26px;border-top:1px solid #3b5071;font-size:11px;color:#99b0d0}
 @media(max-width:890px){.judge-feature-content{grid-template-columns:1fr}.judge-feature-compare{grid-template-columns:1fr 1fr}.judge-feature-compare>span{grid-column:1/-1}}
 @media(max-width:560px){.judge-feature-top{display:block;padding:15px}.judge-feature-indicator{display:block;margin-top:8px}.judge-feature-content{padding:17px}.judge-feature-compare{grid-template-columns:1fr}.judge-feature-compare>span{grid-column:auto}.judge-feature-actions a{width:100%}.judge-feature-scope{padding:13px 17px}}
+
+/* Submission UX: clearly distinguish executable test plans from result reports. */
+.report-guide{margin:9px 0 16px;padding:13px 16px;background:#eef4ff;border:1px solid #d8e4fa;border-radius:8px;color:#425877;font-size:12px;line-height:1.75}
+.report-guide strong{color:#273c5d}
+.report-guide code{background:#e0e9fa;color:#263b65;padding:2px 4px;border-radius:3px;font-size:11px}
+.report-guide a{color:#2e5bac;text-decoration:underline;text-underline-offset:2px}
+.report-guide a:hover{color:#183d8a}

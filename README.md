@@ -6,11 +6,13 @@
 
 [![Model tests](https://github.com/Slyzeal/StateRift/actions/workflows/ci.yml/badge.svg)](https://github.com/Slyzeal/StateRift/actions/workflows/ci.yml)
 
-StateRift helps developers reason about accounting and state invariants when asynchronous cross-contract calls fail. It is an **early proof of concept**, not a production audit tool.
+StateRift helps developers reason about accounting and state invariants when asynchronous cross-contract calls fail. It is a **working hackathon prototype**, not a production audit tool or automatic vulnerability scanner.
 
 **Judge quick start:** [run StateRift in 5 minutes](docs/JUDGE_QUICKSTART.md) · [live website](https://slyzeal.github.io/StateRift/) · [verified Sandbox workflow](https://github.com/Slyzeal/StateRift/actions/workflows/contract-runner.yml).
 
-**Start here for judges:** [Interactive verified execution case study](https://slyzeal.github.io/StateRift/judge-lab.html) — a guided code → real Sandbox receipts → final state comparison, sourced from [GitHub Actions run 42385158139](https://github.com/Slyzeal/StateRift/actions/runs/42385158139). No wallet required. The code example has an intentionally broken contract and a protected version; this is not an arbitrary-code vulnerability scan.\n\n## What is implemented
+**Start here for judges:** [Interactive verified execution case study](https://slyzeal.github.io/StateRift/judge-lab.html) — a guided code → real Sandbox receipts → final state comparison, sourced from [GitHub Actions run 42385158139](https://github.com/Slyzeal/StateRift/actions/runs/42385158139). No wallet required. The code example has an intentionally broken contract and a protected version; this is not an arbitrary-code vulnerability scan.
+
+## What is implemented
 
 - A dependency-free static browser workspace under `web/`. WASM inspection, plan preparation, and report review stay local; live NEAR transaction lookups use read-only RPC on demand.
 - Three deterministic, repeatable **modeled** fault scenarios: premature settlement, missing compensation after a failed transfer, and repeated processing of a successful request.
@@ -71,7 +73,7 @@ Read [`docs/SECURITY.md`](docs/SECURITY.md). StateRift is not a vulnerability sc
 
 MIT.
 
-## Working with your own NEAR contract (v0.4)
+## Working with your own NEAR contract
 
 - **Hosted bytecode inspection:** Select a compiled `.wasm` file on the website. StateRift inspects real imports and exports, identifies asynchronous host-call usage, computes SHA-256, and exports a structural report in your browser. It does **not** prove vulnerabilities.
 - **Actual Sandbox execution:** The separate developer runner accepts your compiled Wasm and a JSON plan with contract calls and state assertions. It executes those checks on a fresh local NEAR Sandbox and emits a real execution report.
@@ -87,9 +89,9 @@ The public website now includes a **test-plan builder** next to WASM inspection.
 
 This is not one-click public execution. GitHub Pages does not run untrusted contracts server-side.
 
-## Real transaction evidence explorer (v0.5)
+## Real transaction evidence explorer
 
-The website also provides a **read-only NEAR transaction receipt explorer** for mainnet and testnet. Supply the transaction hash and its signer account, or press **Try verified testnet example** to inspect a known historical NEAR transaction with a live RPC request. FastNear archival RPC is a fallback for transactions absent from regular RPC state. It shows overall status, failed receipts, observed logs, receipt gas, NearBlocks links, and exports the observed result as JSON.
+The website also provides a **read-only NEAR transaction receipt explorer** for mainnet and testnet. Supply the transaction hash and its signer account, or press **Try verified testnet example** to inspect a known historical NEAR transaction with a live RPC request. Standard and FastNear archival RPC providers are queried with independent deadlines to avoid a stalled endpoint blocking historical lookups. It shows overall status, failed receipts, observed logs, receipt gas, NearBlocks links, and exports the observed result as JSON.
 
 An RPC response can be unavailable depending on CORS, provider limits, or connectivity; failures are surfaced transparently. This feature is **not a vulnerability scanner**, and a failed receipt alone is not proof of exploitation.
 
