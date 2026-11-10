@@ -21,19 +21,14 @@
       <div class="sidebar-scroll">
         <p class="nav-label">WORKSPACE</p>
         <nav class="nav-links" aria-label="Workspace">
-          <a class="side-link current" href="#lab" aria-current="page">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.2"/><rect x="14" y="3" width="7" height="7" rx="1.2"/><rect x="3" y="14" width="7" height="7" rx="1.2"/><rect x="14" y="14" width="7" height="7" rx="1.2"/></svg>
-            <span>Fault laboratory</span>
-          </a>
+          <a class="side-link current" href="#lab" aria-current="location"><span class="nav-symbol" aria-hidden="true">▦</span><span>Overview</span></a>
+          <a class="side-link" href="#contract-inspector"><span class="nav-symbol" aria-hidden="true">◇</span><span>Inspect contract</span></a>
           <a class="side-link" href="#tx-inspector"><span class="nav-symbol" aria-hidden="true">◎</span><span>Live transactions</span></a>
           <a class="side-link" href="#plan-workbench"><span class="nav-symbol" aria-hidden="true">✳</span><span>Test plan builder</span></a>
           <a class="side-link" href="#report-review"><span class="nav-symbol" aria-hidden="true">▤</span><span>Review report</span></a>
-          <a class="side-link" href="#sandbox-evidence">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 20 6v6c0 5-3.4 7.8-8 9-4.6-1.2-8-4-8-9V6l8-3Z"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/></svg>
-            <span>Verified evidence</span>
-          </a>
+          <a class="side-link" href="#fault-lab"><span class="nav-symbol" aria-hidden="true">◈</span><span>Fault laboratory</span></a>
+          <a class="side-link" href="#sandbox-evidence"><span class="nav-symbol" aria-hidden="true">✓</span><span>Verified evidence</span></a>
         </nav>
-        <nav class="nav-links" aria-label="Contract inspection"><a class="side-link" href="#contract-inspector"><span class="nav-symbol" aria-hidden="true">◇</span><span>Inspect contract</span></a></nav>
         <p class="nav-label nav-label-secondary">DEVELOPMENT</p>
         <nav class="nav-links" aria-label="Development links">
           <a class="side-link" href="https://github.com/Slyzeal/StateRift" target="_blank" rel="noopener noreferrer">
@@ -54,8 +49,8 @@
 
     <div class="main-wrap">
       <header class="topbar">
-        <div class="breadcrumbs"><span class="breadcrumb-root">StateRift</span><span class="breadcrumb-divider">/</span><span>Fault laboratory</span></div>
-        <div class="topbar-right"><span class="environment"><span class="environment-dot"></span>Local model</span><a href="https://github.com/Slyzeal/StateRift" target="_blank" rel="noopener noreferrer" class="topbar-link">View on GitHub <span aria-hidden="true">↗</span></a></div>
+        <div class="breadcrumbs"><span class="breadcrumb-root">StateRift</span><span class="breadcrumb-divider">/</span><span id="active-section-label">Overview</span></div>
+        <div class="topbar-right"><span class="environment"><span class="environment-dot"></span><span id="active-mode-label">Mixed tools · clearly labeled</span></span><a href="https://github.com/Slyzeal/StateRift" target="_blank" rel="noopener noreferrer" class="topbar-link">View on GitHub <span aria-hidden="true">↗</span></a></div>
       </header>
       <main id="lab" class="content" tabindex="-1">
         <section class="page-heading" aria-labelledby="page-title">
@@ -67,11 +62,18 @@
           <div class="metric"><span class="metric-caption">TEST CASES</span><div class="metric-number">03 <small>presets</small></div></div>
           <div class="metric"><span class="metric-caption">CONTRACT VARIANTS</span><div class="metric-number">06 <small>implementations</small></div></div>
           <div class="metric"><span class="metric-caption">SANDBOX BASELINE</span><div class="metric-number">03/03 <small>verified</small></div></div>
-          <div class="metric"><span class="metric-caption">EXECUTION MODE</span><div class="metric-number metric-mode"><span class="metric-dot"></span>Local <small>no wallet needed</small></div></div>
+          <div class="metric"><span class="metric-caption">CONTRACT EXECUTION</span><div class="metric-number metric-mode"><span class="metric-dot"></span>Sandbox CLI <small>not on the website</small></div></div>
         </section>
 
+        <nav class="task-guide" aria-label="Choose your StateRift workflow">
+          <span class="task-guide-title">START HERE</span>
+          <a href="./judge-lab.html"><strong>See a verified example</strong><small>Recorded real NEAR Sandbox results</small></a>
+          <a href="#tx-inspector"><strong>Inspect a live transaction</strong><small>Live NEAR RPC · read-only</small></a>
+          <a href="#contract-inspector"><strong>Test your own contract</strong><small>Inspect WASM here · execute via CLI</small></a>
+        </nav>
+
         <section class="judge-feature" aria-labelledby="judge-feature-title">
-          <div class="judge-feature-top"><span class="judge-feature-badge">REAL NEAR SANDBOX · VERIFIED CI CASE STUDY</span><span class="judge-feature-indicator" aria-hidden="true">● LIVE WALKTHROUGH</span></div>
+          <div class="judge-feature-top"><span class="judge-feature-badge">REAL NEAR SANDBOX · VERIFIED CI CASE STUDY</span><span class="judge-feature-indicator">INTERACTIVE · RECORDED SANDBOX DATA</span></div>
           <div class="judge-feature-content">
             <div><h2 id="judge-feature-title">See an actual contract bug, explained.</h2><p>Follow a vulnerable NEAR smart contract from source code to a failed async receipt and the wrong final state. Then compare it against a protected implementation using evidence from a real GitHub Actions Sandbox run.</p><div class="judge-feature-actions"><a class="judge-feature-primary" href="./judge-lab.html">Explore the verified case study <span aria-hidden="true">↗</span></a><a class="judge-feature-secondary" href="https://github.com/Slyzeal/StateRift/actions/runs/42385158139" target="_blank" rel="noopener noreferrer">Verify original CI run ↗</a></div></div>
             <div class="judge-feature-compare" aria-label="Observed failed receipt and final-state contrast"><span>AFTER THE REMOTE RECEIPT FAILS</span><div><small>VULNERABLE</small><strong class="judge-feature-bad">completed = 1</strong><em>INVARIANT VIOLATED</em></div><div><small>PROTECTED</small><strong class="judge-feature-good">completed = 0</strong><em>INVARIANT MAINTAINED</em></div></div>
@@ -152,7 +154,7 @@
           </div>
         </section>
 
-        <section class="lab-section" aria-labelledby="analysis-heading">
+        <section id="fault-lab" class="lab-section" aria-labelledby="analysis-heading">
           <div class="section-head"><div><p class="eyebrow">05 / MODEL EXPLORER</p><h2 id="analysis-heading">Analyze failure cases</h2><p class="section-description">Select a scenario to inspect its invariant and execution sequence.</p></div><div class="micro-note"><span class="micro-note-indicator"></span><span id="overview" aria-live="polite">Run the model to inspect state changes</span></div></div>
           <div class="lab-grid">
             <aside class="scenario-panel" aria-label="Available fault scenarios"><div class="panel-caption"><span>Scenario library</span><span class="panel-caption-count">03 cases</span></div><div id="scenario-list"></div><p class="panel-foot"><strong>About this lab</strong>These are deterministic examples, not scans of user-deployed contracts.</p></aside>
@@ -169,6 +171,7 @@
       </main>
     </div>
   </div>
+  <script type="module" src="./workspace-navigation.js"></script>
   <script type="module" src="./app.js"></script>
   <script type="module" src="./contract-upload.js"></script>
   <script type="module" src="./transaction-inspector.js"></script>
