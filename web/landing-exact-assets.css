@@ -1,0 +1,23 @@
+/* StateRift landing refinement — no external images or changes to Workspace. */
+:root{--page:#0e121b;--ink:#f6f4fb;--muted:#c3c3d2}
+body{background:radial-gradient(ellipse 70% 42% at 75% 18%,#62518a30,transparent 78%),linear-gradient(145deg,#0e121b,#191c2b 54%,#11151f)}
+.mast{background:#111521d9;backdrop-filter:blur(16px);border-bottom:1px solid #c3b2ee25}
+.sr-top-nav a:focus-visible,.button:focus-visible,.home-capabilities a:focus-visible{outline:2px solid #d4bdfd;outline-offset:4px}
+.sr-top-nav a:hover{color:#d9c5ff}
+.intro{position:relative;isolation:isolate}
+.intro::before{content:"";position:absolute;inset:4% -4% 0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 47% 60% at 75% 42%,#8970c42e,transparent 80%)}
+.intro h1{font-weight:700;text-wrap:balance}
+.intro-copy>p:not(.scope-note){text-wrap:pretty}
+.intro-visual{isolation:isolate}
+.intro-visual:before{background:radial-gradient(ellipse at 50% 43%,#bba3ff26,transparent 67%)}
+.sr-terrain{opacity:.7;filter:drop-shadow(0 20px 35px #0506108c)}
+.hero-emblem{filter:drop-shadow(0 24px 30px #000a)}
+.intro-summary{background:linear-gradient(145deg,#29273adf,#141725ed);border-color:#b7a4d66b;box-shadow:0 20px 55px #0008, inset 0 1px #ffffff1a}
+.button{transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+.button:hover{transform:translateY(-2px)}
+.button-main:hover{box-shadow:0 12px 34px #bca9e733}
+.home-capabilities a{transition:background .2s ease,transform .2s ease;border-radius:14px}
+.home-capabilities a:hover{background:#c9b3ff0d;transform:translateY(-2px)}
+@media(max-width:900px){.intro::before{inset:0 -3% 0}.intro-visual{max-width:680px}}
+@media(max-width:600px){.intro::before{inset:0 -18px 0;background:radial-gradient(ellipse 90% 30% at 50% 73%,#8870c52c,transparent 90%)}.intro-visual{overflow:hidden}.hero-emblem{position:relative;top:auto;left:auto;width:min(65%,255px);margin:7px auto -8px}.intro-summary{position:relative;top:auto;right:auto;width:100%;max-width:370px;margin:0 auto}.home-capabilities a:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){.button,.home-capabilities a{transition:none}.button:hover,.home-capabilities a:hover{transform:none}}
