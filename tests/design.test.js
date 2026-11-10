@@ -23,7 +23,10 @@ test('responsive, accessible workspace has meaningful navigation and focus treat
 });
 
 test('UI is transparent about simulations versus verified sample contract runs', () => {
-  assert.match(html, /Local model/);
+  assert.match(html, /id="active-mode-label"/);
+  const nav = readFileSync(new URL('../web/workspace-navigation.js', import.meta.url), 'utf8');
+  assert.match(nav, /Deterministic simulation/);
+  assert.match(nav, /Live NEAR RPC · read-only/);
   assert.match(html, /these are deterministic examples/i);
   assert.match(html, /This is not a security audit/);
   assert.match(html, /Verified Sandbox evidence/);

@@ -69,6 +69,8 @@ runButton.addEventListener('click', () => {
   overview.textContent = `${failed} deliberately vulnerable models failed · ${guarded} protected models passed`;
   downloadButton.disabled = false;
   drawResult();
+  // Take first-time visitors to the result they just generated.
+  document.getElementById('fault-lab')?.scrollIntoView?.({block:'start',behavior:'smooth'});
 });
 
 downloadButton.addEventListener('click', () => {
