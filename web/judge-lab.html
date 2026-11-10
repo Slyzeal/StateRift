@@ -12,40 +12,45 @@
 <body>
   <a href="#walkthrough" class="skip">Skip to the demonstration</a>
   <header class="mast">
-    <a class="wordmark" href="./index.html" aria-label="StateRift workspace"><img class="brand-ribbon" src="./staterift-mark.svg" alt="" width="48" height="48"><span>StateRift <small>RECEIPT INTELLIGENCE</small></span></a>
-    <nav aria-label="Page links"><a href="./index.html">Workspace</a><a href="#walkthrough">Verified case study</a><a href="https://github.com/Slyzeal/StateRift" target="_blank" rel="noopener noreferrer">GitHub ↗</a></nav>
+    <a class="wordmark" href="./judge-lab.html" aria-label="StateRift home"><img class="brand-ribbon" src="./staterift-ribbon-pro.svg" alt="" width="52" height="60"><span>StateRift <small>RECEIPT INTELLIGENCE</small></span></a>
+    <nav class="sr-top-nav" aria-label="Primary navigation">
+      <a class="sr-home-current" href="./judge-lab.html" aria-current="page">Home</a>
+      <a href="./index.html">Workspace</a>
+      <a href="#walkthrough">Verified Case Study</a>
+      <span class="sr-nav-divider" aria-hidden="true"></span>
+      <a class="sr-github" href="https://github.com/Slyzeal/StateRift" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+    </nav>
   </header>
   <main>
     <section class="intro" aria-labelledby="heading">
       <div class="intro-copy">
         <div class="near-tag"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M11 36V11l26 26V11M11 36L37 11" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg> BUILT FOR <strong>NEAR</strong></div>
         <h1 id="heading">Trace, analyze, and verify <em>NEAR</em> contract behavior.</h1>
-        <p>Inspect compiled contract WASM, explore real transaction receipts, and follow reproducible Sandbox evidence to understand how asynchronous failures affect contract state.</p>
+        <p>A practical sandbox to inspect contract WASM, analyze transaction receipts, and compare vulnerable and protected implementations with real execution evidence.</p>
         <div class="intro-actions">
-          <a class="button button-main" href="./index.html">Open workspace <span aria-hidden="true">→</span></a>
-          <a class="button button-outline" href="#walkthrough">Explore verified case study <span aria-hidden="true">↗</span></a>
+          <a class="button button-main" href="./index.html">Open Workspace <span aria-hidden="true">→</span></a>
+          <a class="button button-outline" href="#walkthrough"><span class="sr-stack-icon" aria-hidden="true">▱</span> Explore Verified Case Study</a>
         </div>
-        <p class="scope-note">Browser tools are read-only or local. Custom NEAR Sandbox execution runs separately via CLI.</p>
       </div>
-      <div class="intro-visual" aria-label="StateRift mark and verified NEAR Sandbox comparison">
-        <div class="visual-rings" aria-hidden="true"></div>
-        <div class="hero-emblem" aria-hidden="true"><img src="./staterift-mark.svg" alt="" width="300" height="300"></div>
+      <div class="intro-visual" aria-label="NEAR Sandbox receipt comparison">
+        <img class="sr-terrain" src="./near-terrain.svg" alt="" aria-hidden="true" width="850" height="550">
+        <div class="hero-emblem" aria-hidden="true"><img src="./staterift-ribbon-pro.svg" alt="" width="346" height="400"></div>
         <div class="intro-summary">
-          <span class="eyebrow">RECORDED NEAR SANDBOX RESULT</span>
-          <div class="stat-line"><span>Failed inner receipt</span><strong>1</strong></div>
-          <div class="stat-line"><span>Vulnerable completed</span><strong class="text-danger">1</strong></div>
-          <div class="stat-line"><span>Protected completed</span><strong class="text-good">0</strong></div>
-          <p>Both outer calls returned successfully. Only the protected implementation maintained the state invariant.</p>
+          <span class="eyebrow">NEAR SANDBOX RESULT</span>
+          <div class="stat-line"><span class="sr-result-label"><span class="sr-result-icon sr-failure" aria-hidden="true">×</span> Failed inner receipt</span><strong>1</strong></div>
+          <div class="stat-line"><span class="sr-result-label"><span class="sr-result-icon sr-success" aria-hidden="true">✓</span> Protected completed</span><strong class="text-good">0</strong></div>
+          <p>Recorded example: the vulnerable implementation ended with completed = 1 despite a failed inner receipt.</p>
           <a id="evidence-link" class="mini-proof" href="https://github.com/Slyzeal/StateRift/actions/runs/42385158139" target="_blank" rel="noopener noreferrer">Verify GitHub CI ↗</a>
         </div>
       </div>
     </section>
     <nav class="home-capabilities" aria-label="Existing StateRift tools">
-      <a href="./index.html#contract-inspector"><span class="capability-icon" aria-hidden="true">⌘</span><span><strong>Inspect WASM</strong><small>Analyze compiled contract structure locally</small></span></a>
-      <a href="./index.html#tx-inspector"><span class="capability-icon" aria-hidden="true">◎</span><span><strong>Explore receipts</strong><small>Live, read-only NEAR RPC transaction data</small></span></a>
-      <a href="./index.html#fault-lab"><span class="capability-icon" aria-hidden="true">◇</span><span><strong>Run fault models</strong><small>Compare three deterministic scenarios</small></span></a>
-      <a href="./index.html#plan-workbench"><span class="capability-icon" aria-hidden="true">⌁</span><span><strong>Build test plans</strong><small>Export JSON for the separate Sandbox CLI</small></span></a>
+      <a href="./index.html#contract-inspector"><span class="capability-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M8 5 2 12l6 7M16 5l6 7-6 7M14 3l-4 18"/></svg></span><span><strong>Inspect WASM</strong><small>Load and analyze compiled contract files.</small></span></a>
+      <a href="./index.html#tx-inspector"><span class="capability-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"><path d="m3 7 9-4 9 4-9 4-9-4ZM3 12l9 4 9-4M3 17l9 4 9-4"/></svg></span><span><strong>Explore Receipts</strong><small>View real NEAR transaction receipts.</small></span></a>
+      <a href="./index.html#fault-lab"><span class="capability-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 3 4 6v5c0 5 3.4 8.3 8 10 4.6-1.7 8-5 8-10V6l-8-3ZM9 12l2 2 4-4"/></svg></span><span><strong>Run Fault Models</strong><small>Reproduce and compare failure scenarios.</small></span></a>
+      <a href="./index.html#plan-workbench"><span class="capability-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="m4 7 6 5-6 5M12 18h8"/></svg></span><span><strong>Build Test Plans</strong><small>Generate plans for Sandbox CLI validation.</small></span></a>
     </nav>
+    <div class="sr-near-powered" aria-label="Built for NEAR"><span class="sr-near-line"></span><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M11 36V11l26 26V11M11 36L37 11" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>POWERED BY <strong>NEAR</strong></span><span class="sr-near-line"></span></div>
     <section class="context" aria-label="Evidence context">
       <div><strong>Environment</strong><span>Isolated NEAR Sandbox</span></div>
       <div><strong>Evidence</strong><span>GitHub Actions artifact</span></div>
