@@ -6,6 +6,13 @@ on:
     paths:
       - '.github/workflows/near-rpc-smoke.yml'
       - 'web/transaction-evidence.js'
+      - 'scripts/check-rpc-cors.mjs'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/near-rpc-smoke.yml'
+      - 'web/transaction-evidence.js'
+      - 'scripts/check-rpc-cors.mjs'
 
 permissions:
   contents: read
@@ -19,36 +26,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Check browser CORS preflight on archival RPC
-        run: |
-          headers=$(curl -sS -D - -o /dev/null -X OPTIONS 'https://archival-rpc.testnet.fastnear.com' -H 'Origin: https://slyzeal.github.io' -H 'Access-Control-Request-Method: POST' -H 'Access-Control-Request-Headers: content-type')
-          echo "$headers" | grep -i 'access-control-allow-origin' || true
-          echo "$headers" | grep -i 'access-control-allow-methods' || true
-          echo "$headers" | grep -i 'access-control-allow-headers' || true
-      - name: Check a documented archived testnet receipt (read-only)
-        run: |
-          node --input-type=module <<'NODE'
-          const hash='CVyG2xLJ6fuKCtULAxMnWTh2GL5ey2UUiTcgYT3M6Pow';
-          const signer='mike.testnet';
-          const urls=[
-            'https://archival-rpc.testnet.fastnear.com',
-            'https://rpc.testnet.near.org'
-          ];
-          const body=JSON.stringify({
-            jsonrpc:'2.0',id:'staterift-smoke',method:'tx',
-            params:{tx_hash:hash,sender_account_id:signer,wait_until:'FINAL'}
-          });
-          let passed=false;
-          for(const url of urls) {
-            try {
-              const res=await fetch(url,{method:'POST',headers:{'content-type':'application/json'},body,signal:AbortSignal.timeout(12000)});
-              const json=await res.json();
-              if(res.ok && json.result?.transaction?.signer_id===signer && Array.isArray(json.result?.receipts_outcome)) {
-                console.log('Validated real receipt:',url,'final status:',json.result.final_execution_status,'receipt count:',json.result.receipts_outcome.length);
-                passed=true;break;
-              }
-              console.log('Unavailable:',url,'status',res.status,'RPC error:',json.error?.message||'none');
-            }catch(e){console.log('Unavailable:',url,e.message);}
-          }
-          if(!passed) process.exit(1);
-          NODE
+      - name: Verify browser CORS and real archived NEAR transaction
+        run: node scripts/check-rpc-cors.mjs

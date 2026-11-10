@@ -2,6 +2,16 @@
  * Passing validation does NOT establish authenticity of the uploaded file.
  */
 const isObject=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
+// Only compare JSON data. Report files come from JSON.parse(), not arbitrary JS objects.
+// Unlike JSON.stringify equality, this respects object key order independence.
+function sameJson(a,b) {
+  if (Object.is(a,b)) return true;
+  if (Array.isArray(a) || Array.isArray(b))
+    return Array.isArray(a)&&Array.isArray(b)&&a.length===b.length&&a.every((x,i)=>sameJson(x,b[i]));
+  if (!isObject(a)||!isObject(b)) return false;
+  const keys=Object.keys(a);
+  return keys.length===Object.keys(b).length&&keys.every(k=>Object.hasOwn(b,k)&&sameJson(a[k],b[k]));
+}
 export function validateExecutionReport(r) {
   if(isObject(r)&&r.schemaVersion===1&&typeof r.name==='string'&&Array.isArray(r.steps)&&!r.kind)
     throw new Error('You selected a TEST PLAN, not an execution report. A plan is only instructions. Run it using the NEAR Sandbox CLI, then upload the generated report.json. To test the viewer without Terminal, download protected.json from the linked successful GitHub Actions run.');
@@ -40,6 +50,15 @@ export function validateExecutionReport(r) {
       }
       if(step.receipts!==undefined&&(!Array.isArray(step.receipts)||step.receipts.length>24))
         throw new Error('Invalid receipt list.');
+      if(step.error!==undefined&&step.passed)
+        throw new Error('A call with a recorded execution error cannot pass.');
+    } else {
+      if(!Object.hasOwn(step,'expected')||!Object.hasOwn(step,'actual'))
+        throw new Error('Missing view assertion evidence in step '+(i+1)+'.');
+      if(step.error!==undefined&&step.passed)
+        throw new Error('A failed view call cannot pass.');
+      if(step.error===undefined&&step.passed!==sameJson(step.expected,step.actual))
+        throw new Error('View assertion verdict disagrees with expected and actual state in step '+(i+1)+'.');
     }
   }
   if(r.passed!==r.steps.every(s=>s.passed))throw new Error('Overall verdict disagrees with step assertions.');
