@@ -440,3 +440,15 @@ footer a { color: #5b6e91; }
 .report-guide code{background:#e0e9fa;color:#263b65;padding:2px 4px;border-radius:3px;font-size:11px}
 .report-guide a{color:#2e5bac;text-decoration:underline;text-underline-offset:2px}
 .report-guide a:hover{color:#183d8a}
+
+/* Submission clarity: one small starting point for three distinct workflows. */
+.task-guide{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:stretch;margin:0 0 30px}
+.task-guide-title{grid-column:1/-1;color:#53647c;font-size:10px;font-weight:790;letter-spacing:1.3px}
+.task-guide>a{min-width:0;border:1px solid #d9e2f1;background:#fff;border-radius:10px;padding:15px 16px;display:grid;gap:5px;transition:border-color .16s,box-shadow .16s}
+.task-guide>a:hover{border-color:#8ea9e8;box-shadow:0 3px 14px rgba(25,48,100,.07)}
+.task-guide>a:focus-visible{outline:3px solid #90aaff;outline-offset:2px}
+.task-guide strong{color:#233657;font-size:13px;line-height:1.4}
+.task-guide small{color:#65748b;font-size:11px;line-height:1.55}
+#contract-inspector,#tx-inspector,#plan-workbench,#report-review,#fault-lab,#sandbox-evidence{scroll-margin-top:22px}
+@media(max-width:900px){.task-guide{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
