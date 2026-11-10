@@ -90,7 +90,7 @@ try{
   assert.equal((await txDownload).suggestedFilename(),'staterift-transaction-evidence.json');
 
   await page.goto(base+'/judge-lab.html',{waitUntil:'networkidle'});
-  await page.locator('#verified-source').getByText(/Pinned CI run/).waitFor();
+  await page.waitForFunction(() => document.querySelector('#verified-source')?.textContent?.includes('Pinned CI run'));
   await page.locator('#choose-protected').click();
   await page.locator('#next-step').click();
   assert.match(await page.locator('#stage-title').innerText(),/asynchronous execution/);
