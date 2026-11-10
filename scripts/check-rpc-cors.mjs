@@ -21,7 +21,7 @@ const results=await Promise.all(endpoints.map(async(url)=>{
     if(!preflight.ok||!allowsOrigin(preflight.headers)||
       !accepts(preflight.headers.get('access-control-allow-methods'),'POST')||
       !accepts(preflight.headers.get('access-control-allow-headers'),'content-type'))
-      throw new Error('Browser CORS preflight denied POST with content-type');
+      throw new Error('Browser CORS preflight denied POST with content-type: HTTP '+preflight.status+' ACAO='+preflight.headers.get('access-control-allow-origin')+' ACAM='+preflight.headers.get('access-control-allow-methods')+' ACAH='+preflight.headers.get('access-control-allow-headers'));
     const response=await fetch(url,{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},
       body,signal:AbortSignal.timeout(12000)});
     if(!response.ok||!allowsOrigin(response.headers))throw new Error('Browser cannot read cross-origin POST response');
