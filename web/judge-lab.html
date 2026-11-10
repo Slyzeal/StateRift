@@ -11,25 +11,40 @@
 <body>
   <a href="#walkthrough" class="skip">Skip to the demonstration</a>
   <header class="mast">
-    <a class="wordmark" href="./index.html"><span class="logo-mark" aria-hidden="true">S</span><span>StateRift <small>RECEIPT INTELLIGENCE</small></span></a>
-    <nav aria-label="Page links"><a href="./index.html">Workspace</a><a href="https://github.com/Slyzeal/StateRift" target="_blank" rel="noopener noreferrer">Source code ↗</a></nav>
+    <a class="wordmark" href="./index.html" aria-label="StateRift workspace"><img class="brand-ribbon" src="./staterift-mark.svg" alt="" width="48" height="48"><span>StateRift <small>RECEIPT INTELLIGENCE</small></span></a>
+    <nav aria-label="Page links"><a href="./index.html">Workspace</a><a href="#walkthrough">Verified case study</a><a href="https://github.com/Slyzeal/StateRift" target="_blank" rel="noopener noreferrer">GitHub ↗</a></nav>
   </header>
   <main>
     <section class="intro" aria-labelledby="heading">
-      <div>
-        <div class="kicker"><span class="live-dot"></span> VERIFIED CASE STUDY · NEAR SANDBOX</div>
-        <h1 id="heading">A transaction can <em>succeed</em> while your contract's state is wrong.</h1>
-        <p>Trace an asynchronous failure through real execution evidence. Compare the code, the failed receipt, and the final state of a vulnerable contract against a protected implementation.</p>
-        <div class="intro-actions"><a class="button button-main" href="#walkthrough">Explore the evidence <span aria-hidden="true">↓</span></a><a class="button button-outline" id="evidence-link" href="https://github.com/Slyzeal/StateRift/actions/runs/42385158139" target="_blank" rel="noopener noreferrer">Verify GitHub CI <span aria-hidden="true">↗</span></a></div>
+      <div class="intro-copy">
+        <div class="near-tag"><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M11 36V11l26 26V11M11 36L37 11" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg> BUILT FOR <strong>NEAR</strong></div>
+        <h1 id="heading">Trace, analyze, and verify <em>NEAR</em> contract behavior.</h1>
+        <p>Inspect compiled contract WASM, explore real transaction receipts, and follow reproducible Sandbox evidence to understand how asynchronous failures affect contract state.</p>
+        <div class="intro-actions">
+          <a class="button button-main" href="./index.html">Open workspace <span aria-hidden="true">→</span></a>
+          <a class="button button-outline" href="#walkthrough">Explore verified case study <span aria-hidden="true">↗</span></a>
+        </div>
+        <p class="scope-note">Browser tools are read-only or local. Custom NEAR Sandbox execution runs separately via CLI.</p>
       </div>
-      <div class="intro-summary" aria-label="Verified execution summary">
-        <span class="eyebrow">REAL SANDBOX RESULT</span>
-        <div class="headline-stat"><span>1</span><span>failed inner receipt</span></div>
-        <div class="stat-line"><span>Vulnerable completed</span><strong class="text-danger">1 <small>← invariant broken</small></strong></div>
-        <div class="stat-line"><span>Protected completed</span><strong class="text-good">0 <small>← invariant maintained</small></strong></div>
-        <p>Both outer calls returned successfully. The real difference is what the contracts did to persistent state.</p>
+      <div class="intro-visual" aria-label="StateRift mark and verified NEAR Sandbox comparison">
+        <div class="visual-rings" aria-hidden="true"></div>
+        <div class="hero-emblem" aria-hidden="true"><img src="./staterift-mark.svg" alt="" width="300" height="300"></div>
+        <div class="intro-summary">
+          <span class="eyebrow">RECORDED NEAR SANDBOX RESULT</span>
+          <div class="stat-line"><span>Failed inner receipt</span><strong>1</strong></div>
+          <div class="stat-line"><span>Vulnerable completed</span><strong class="text-danger">1</strong></div>
+          <div class="stat-line"><span>Protected completed</span><strong class="text-good">0</strong></div>
+          <p>Both outer calls returned successfully. Only the protected implementation maintained the state invariant.</p>
+          <a id="evidence-link" class="mini-proof" href="https://github.com/Slyzeal/StateRift/actions/runs/42385158139" target="_blank" rel="noopener noreferrer">Verify GitHub CI ↗</a>
+        </div>
       </div>
     </section>
+    <nav class="home-capabilities" aria-label="Existing StateRift tools">
+      <a href="./index.html#contract-inspector"><span class="capability-icon" aria-hidden="true">⌘</span><span><strong>Inspect WASM</strong><small>Analyze compiled contract structure locally</small></span></a>
+      <a href="./index.html#tx-inspector"><span class="capability-icon" aria-hidden="true">◎</span><span><strong>Explore receipts</strong><small>Live, read-only NEAR RPC transaction data</small></span></a>
+      <a href="./index.html#fault-lab"><span class="capability-icon" aria-hidden="true">◇</span><span><strong>Run fault models</strong><small>Compare three deterministic scenarios</small></span></a>
+      <a href="./index.html#plan-workbench"><span class="capability-icon" aria-hidden="true">⌁</span><span><strong>Build test plans</strong><small>Export JSON for the separate Sandbox CLI</small></span></a>
+    </nav>
     <section class="context" aria-label="Evidence context">
       <div><strong>Environment</strong><span>Isolated NEAR Sandbox</span></div>
       <div><strong>Evidence</strong><span>GitHub Actions artifact</span></div>
